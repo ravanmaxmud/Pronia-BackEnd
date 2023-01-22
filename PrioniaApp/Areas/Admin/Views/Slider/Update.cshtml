@@ -12,6 +12,11 @@
                     <form method="POST" asp-route="admin-slider-update" enctype="multipart/form-data">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <div class="form-group">
+                            <label>HeaderTitle</label>
+                            <input asp-for="HeaderTitle" class="form-control">
+                            <span asp-validation-for="HeaderTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
                             <label>MainTitle</label>
                             <input asp-for="MainTitle" class="form-control">
                             <span asp-validation-for="MainTitle" class="text-danger"></span>

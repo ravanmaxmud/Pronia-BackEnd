@@ -15,7 +15,7 @@ namespace PrioniaApp.Database
         public DbSet<Navbar> Navbars { get; set; }
         public DbSet<SubNavbar> SubNavbars { get; set; }
         public DbSet<Slider> Sliders { get; set; }
-
+        public DbSet<PaymentBenefit> PaymentBenefits { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly<Program>();

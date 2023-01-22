@@ -9,10 +9,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\ViewCompanents\" />
     <Folder Include="Areas\Client\ActionFilter\" />
-    <Folder Include="Contracts\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Services\Abstracts\" />
-    <Folder Include="Services\Concretes\" />
   </ItemGroup>
 
   <ItemGroup>

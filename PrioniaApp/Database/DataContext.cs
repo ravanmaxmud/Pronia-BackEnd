@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DemoApplication.Extensions;
+using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Database.Models;
 
 namespace PrioniaApp.Database
 {
@@ -8,6 +10,13 @@ namespace PrioniaApp.Database
         :base(options)
         {
 
+        }
+
+        public DbSet<Navbar> Navbars { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly<Program>();
         }
 
 

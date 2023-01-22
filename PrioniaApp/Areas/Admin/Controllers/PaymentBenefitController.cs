@@ -9,7 +9,7 @@ using PrioniaApp.Services.Abstracts;
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
-    [Route("admin/pay-benefit")]
+    [Route("admin/payment")]
     public class PaymentBenefitController : Controller
     {
         private readonly DataContext _dataContext;
@@ -21,7 +21,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
             _fileService = fileService;
         }
         #region List
-        [HttpGet("list",Name ="admin-pay-benefit-list")]
+        [HttpGet("list",Name = "admin-payment-list")]
         public async Task<IActionResult> List()
         {
             var model = await _dataContext.PaymentBenefits.Select
@@ -36,13 +36,13 @@ namespace PrioniaApp.Areas.Admin.Controllers
         #endregion
 
         #region add
-        [HttpGet("add", Name = "admin-pay-benefit-add")]
+        [HttpGet("add", Name = "admin-payment-add")]
         public async Task<IActionResult> Add()
         {
             return View();
         }
 
-        [HttpPost("add", Name = "admin-pay-benefit-add")]
+        [HttpPost("add", Name = "admin-payment-add")]
         public async Task<IActionResult> Add(AddViewModel model)
         {
 
@@ -54,7 +54,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
 
             await _dataContext.SaveChangesAsync();
 
-            return RedirectToRoute("admin-pay-benefit-list");
+            return RedirectToRoute("admin-payment-list");
 
 
             async void AddPaymnetBenefit(string imageName, string imageNameInSystem)
@@ -75,7 +75,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         #endregion
 
         #region update
-        [HttpGet("update/{id}", Name = "admin-pay-benefit-update")]
+        [HttpGet("update/{id}", Name = "admin-payment-update")]
         public async Task<IActionResult> Update([FromRoute] int id)
         {
             var paymentBenefit = await _dataContext.PaymentBenefits.FirstOrDefaultAsync(s => s.Id == id);
@@ -94,7 +94,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost("update/{id}", Name = "admin-pay-benefit-update")]
+        [HttpPost("update/{id}", Name = "admin-payment-update")]
         public async Task<IActionResult> Update(UpdateViewModel model)
         {
 
@@ -116,7 +116,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
 
             await UpdatePaymentBenefit(model.Backgroundİmage.FileName, backGroundImageFileSystem);
 
-            return RedirectToRoute("admin-pay-benefit-list");
+            return RedirectToRoute("admin-payment-list");
 
 
             async Task UpdatePaymentBenefit(string imageName, string imageNameInSystem)
@@ -134,7 +134,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         #endregion
 
 
-        [HttpPost("delete/{id}", Name = "admin-pay-benefit-delete")]
+        [HttpPost("delete/{id}", Name = "admin-payment-delete")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var paymentBenefit = await _dataContext.PaymentBenefits.FirstOrDefaultAsync(s => s.Id == id);
@@ -146,7 +146,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
             _dataContext.PaymentBenefits.Remove(paymentBenefit);
             await _dataContext.SaveChangesAsync();
 
-            return RedirectToRoute("admin-pay-benefit-list");
+            return RedirectToRoute("admin-payment-list");
         }
     }
 }

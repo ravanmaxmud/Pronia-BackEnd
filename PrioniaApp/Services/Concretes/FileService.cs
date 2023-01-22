@@ -55,6 +55,8 @@ namespace PrioniaApp.Services.Concretes
                     return $"{initialSegment}/books/{fileName}";
                 case UploadDirectory.Slider:
                     return $"{initialSegment}/sliders/{fileName}";
+                case UploadDirectory.PaymentBenefits:
+                    return $"{initialSegment}/paymentBenefits/{fileName}";
                 default:
                     throw new Exception("Something went wrong");
             }
@@ -75,6 +77,8 @@ namespace PrioniaApp.Services.Concretes
                     return Path.Combine(startPath, "products");
                 case UploadDirectory.Slider:
                     return Path.Combine(startPath, "sliders");
+                case UploadDirectory.PaymentBenefits:
+                    return Path.Combine(startPath, "paymentBenefits");
                 default:
                     throw new Exception("Something went wrong");
             }

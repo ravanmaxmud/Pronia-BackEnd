@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\ViewCompanents\" />
     <Folder Include="Areas\Client\ActionFilter\" />
-    <Folder Include="Areas\Client\ViewCompanents\" />
-    <Folder Include="Areas\Client\ViewModels\" />
     <Folder Include="Contracts\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Services\Abstracts\" />

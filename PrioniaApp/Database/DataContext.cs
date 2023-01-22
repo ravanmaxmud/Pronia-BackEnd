@@ -13,6 +13,7 @@ namespace PrioniaApp.Database
         }
 
         public DbSet<Navbar> Navbars { get; set; }
+        public DbSet<SubNavbar> SubNavbars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -43,15 +43,17 @@ namespace PrioniaApp.Areas.Admin.Controllers
         [HttpPost("add", Name = "admin-slider-add")]
         public async Task<IActionResult> Add(AddViewModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(model);
-            } 
-            
+            }
+
 
             var imageNameInSystem = await _fileService.UploadAsync(model.Backgroundİmage,UploadDirectory.Slider);
 
             AddSlider(model.Backgroundİmage.FileName,imageNameInSystem);
+
+            await _dataContext.SaveChangesAsync();
 
             return RedirectToRoute("admin-slider-list");
 
@@ -65,13 +67,13 @@ namespace PrioniaApp.Areas.Admin.Controllers
                     Content = model.Content,
                     Backgroundİmage = imageName,
                     BackgroundİmageInFileSystem = imageNameInSystem,
+                    Button = model.Button,
+                    ButtonRedirectUrl = model.ButtonRedirectUrl,
                     CreatedAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
                 };
 
                 await _dataContext.Sliders.AddAsync(slider);
-
-                await _dataContext.SaveChangesAsync();
             }
         }
 

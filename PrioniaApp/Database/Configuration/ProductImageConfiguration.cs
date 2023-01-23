@@ -5,14 +5,12 @@ using PrioniaApp.Database.Models;
 namespace PrioniaApp.Database.Configuration
 {
 
-    public class NavbarConfiguration : IEntityTypeConfiguration<Navbar>
+    public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
     {
-        public void Configure(EntityTypeBuilder<Navbar> builder)
+        public void Configure(EntityTypeBuilder<ProductImage> builder)
         {
             builder
-               .ToTable("Navbars");
+               .ToTable("ProductImagees");
         }
     }
-
 }
-

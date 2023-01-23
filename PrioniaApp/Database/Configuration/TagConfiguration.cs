@@ -4,15 +4,12 @@ using PrioniaApp.Database.Models;
 
 namespace PrioniaApp.Database.Configuration
 {
-
-    public class NavbarConfiguration : IEntityTypeConfiguration<Navbar>
+    public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {
-        public void Configure(EntityTypeBuilder<Navbar> builder)
+        public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder
-               .ToTable("Navbars");
+               .ToTable("Tags");
         }
     }
-
 }
-

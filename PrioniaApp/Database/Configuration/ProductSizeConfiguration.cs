@@ -4,15 +4,12 @@ using PrioniaApp.Database.Models;
 
 namespace PrioniaApp.Database.Configuration
 {
-
-    public class NavbarConfiguration : IEntityTypeConfiguration<Navbar>
+    public class ProductSizeConfiguration : IEntityTypeConfiguration<ProductSize>
     {
-        public void Configure(EntityTypeBuilder<Navbar> builder)
+        public void Configure(EntityTypeBuilder<ProductSize> builder)
         {
             builder
-               .ToTable("Navbars");
+               .ToTable("ProductSizes");
         }
     }
-
 }
-

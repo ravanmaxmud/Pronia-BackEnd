@@ -52,7 +52,7 @@ namespace PrioniaApp.Services.Concretes
             switch (uploadDirectory)
             {
                 case UploadDirectory.Products:
-                    return $"{initialSegment}/books/{fileName}";
+                    return $"{initialSegment}/products/{fileName}";
                 case UploadDirectory.Slider:
                     return $"{initialSegment}/sliders/{fileName}";
                 case UploadDirectory.PaymentBenefits:

@@ -1,0 +1,28 @@
+﻿@using PrioniaApp.Areas.Client.ViewModels.Home
+@model IndexViewModel
+
+
+<div class="shipping-area section-space-top-100">
+    <div class="container">
+        <div class="shipping-bg">
+            <div class="row shipping-wrap">
+                @foreach (var paymentBenefits in Model.PaymentBenefits)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="shipping-item">
+                            <div class="shipping-img">
+                                <img src="~/@paymentBenefits.BackGroundImageUrl"
+                                 alt="Shipping Icon" />
+                            </div>
+                            <div class="shipping-content">
+                                <h2 class="title">@paymentBenefits.Title</h2>
+                                <p class="short-desc mb-0">@paymentBenefits.Content</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

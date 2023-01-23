@@ -27,10 +27,6 @@ namespace PrioniaApp.Areas.Client.Controllers
             {
                 Sliders = await _dbContext.Sliders.Select(s => new SliderViewModel(s.Id, s.HeaderTitle, s.MainTitle, s.Content, s.Button, s.ButtonRedirectUrl,
                 _fileService.GetFileUrl(s.BackgroundİmageInFileSystem, UploadDirectory.Slider))).ToListAsync(),
-
-                PaymentBenefits = await _dbContext.PaymentBenefits.Select
-                (p=> new PaymentBenefitsViewModel
-                (p.Id,p.Title,p.Content,_fileService.GetFileUrl(p.BackgroundİmageInFileSystem,UploadDirectory.PaymentBenefits))).ToListAsync()
             };
 
             return View(model);

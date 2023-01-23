@@ -40,13 +40,13 @@
                                 <td>@string.Join(", ", book.Categories.Select(c => $"{c.Title}->{c.ParentTitle}"))</td>
                                 <td>@book.CreatedAt.ToString("dd/MM/yyyy")</td>
                                 <td class="text-end">
-                                   
-                                    <a asp-route="admin-product-update" asp-route-id="@book.Id" ><i class="las la-pen text-secondary font-16"></i></a>
+
+                                    <a class="btn btn-success" asp-route="admin-product-update" asp-route-id="@book.Id">Update Product</a>
                                     <form method="POST" asp-route="admin-product-delete" asp-route-id="@book.Id" id="book-form-@book.Id"></form>
-                                    <button type="submit" form="book-form-@book.Id">
-                                        <i class="las la-trash-alt text-secondary font-16"></i>
+                                    <button class="btn btn-danger" type="submit" form="book-form-@book.Id">
+                                        Delete Product
                                     </button>
-                                    <a class="btn btn-danger" asp-route="admin-product-image-list" asp-route-bookId="@book.Id">BookImageList</a>
+                                    <a class="btn btn-primary" asp-route="admin-product-image-list" asp-route-bookId="@book.Id">ProductImageList</a>
                                 </td>
                             </tr>
                         }

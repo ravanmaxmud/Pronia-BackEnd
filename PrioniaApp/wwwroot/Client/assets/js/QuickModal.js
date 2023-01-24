@@ -1,6 +1,4 @@
-﻿
-
-$(document).on("click", ".show-product-modal", function (e) {
+﻿$(document).on("click", ".show-product-modal", function (e) {
     e.preventDefault();
 
     var url = e.target.href;

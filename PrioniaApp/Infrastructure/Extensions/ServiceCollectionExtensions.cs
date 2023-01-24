@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Infrastructure.Configurations;
 using System.Text.Json.Serialization;
+using PrioniaApp.Areas.Client.ActionFilter;
 
 namespace PrioniaApp.Infrastructure.Extensions
 {
@@ -14,17 +15,17 @@ namespace PrioniaApp.Infrastructure.Extensions
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
-            //{
-            //    o.Cookie.Name = "Identity";
-            //    o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-            //    o.LoginPath = "/authentication/login";
-            //    o.AccessDeniedPath = "/admin/auth/login";
-            //});
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
+            {
+                o.Cookie.Name = "Identity";
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                o.LoginPath = "/authentication/login";
+                o.AccessDeniedPath = "/admin/auth/login";
+            });
 
             services.AddHttpContextAccessor();
 
-            //services.AddScoped<ValidationCurrentUserAttribute>();
+            services.AddScoped<ValidationCurrentUserAttribute>();
 
             services.ConfigureMvc();
 

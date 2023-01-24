@@ -1,6 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using PrioniaApp.Areas.Client.ViewModels.Home
-@using PrioniaApp.Areas.Client.ViewCompanents
+@using PrioniaApp.Areas.Client.ViewModels.Home.Modal
+@model ModalViewModel
 
 <div class="modal-wrap row">
     <div class="col-lg-6">
@@ -10,8 +10,8 @@
                     <div class="swiper-slide">
                         <a href="#" class="single-img">
                             <img class="img-full"
-                                 src="~/"
-                                 alt="Product Image" />
+                                 src="~/@Model.ImgUrl"
+                                 alt="Product Image"/>
                         </a>
                     </div>
                 </div>
@@ -20,9 +20,9 @@
     </div>
     <div class="col-lg-6 pt-5 pt-lg-0">
         <div class="single-product-content">
-            <h2 class="title">American Marigold</h2>
+            <h2 class="title">@Model.Title</h2>
             <div class="price-box">
-                <span class="new-price">$23.45</span>
+                <span class="new-price">$@Model.Price</span>
             </div>
             <div class="rating-box-wrap">
                 <div class="rating-box">
@@ -56,11 +56,7 @@
                 </select>
             </div>
             <p class="short-desc">
-                Lorem ipsum dolor sit amet, consectetur adipisic elit, sed
-                do eiusmod tempo incid ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostru exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate
+               @Model.Description
             </p>
             <ul class="quantity-with-btn">
                 <li class="quantity">

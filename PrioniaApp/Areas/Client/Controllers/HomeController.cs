@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Client.ViewModels.Home;
+using PrioniaApp.Areas.Client.ViewModels.Home.Modal;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
@@ -48,19 +49,11 @@ namespace PrioniaApp.Areas.Client.Controllers
                 return NotFound();
             }
 
-            var model = new ProductListItemViewModel(product.Id, product.Name, product.Description, product.Price,
+            var model = new ModalViewModel(product.Name,product.Description,product.Price,
                 product.ProductImages!.Take(1).FirstOrDefault() != null
                 ? _fileService.GetFileUrl(product.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                : String.Empty,
-                   product.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
-                ? _fileService.GetFileUrl(product.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                : String.Empty,
-                product.ProductCatagories!.Select(pc => pc.Catagory).Select(c => new ProductListItemViewModel.CategoryViewModeL(c.Title, c.Parent.Title)).ToList(),
-                product.ProductColors!.Select(pc => pc.Color).Select(c => new ProductListItemViewModel.ColorViewModeL(c.Name)).ToList(),
-                product.ProductSizes!.Select(ps => ps.Size).Select(s => new ProductListItemViewModel.SizeViewModeL(s.Title)).ToList(),
-                product.ProductTags!.Select(ps => ps.Tag).Select(s => new ProductListItemViewModel.TagViewModel(s.Title)).ToList());
-
-            return PartialView("~/Areas/Client/Views/Shared/Partials/_ProductModalPartial.cshtml", model);
+                : String.Empty);
+            return PartialView("~/Areas/Client/Views/Shared/_ProductModalPartial.cshtml", model);
         }
     }
 }

@@ -7,13 +7,13 @@ using PrioniaApp.Services.Abstracts;
 
 namespace PrioniaApp.Areas.Client.ViewCompanents
 {
-    [ViewComponent(Name = "QuickView")]
-    public class QuickView : ViewComponent
+    [ViewComponent(Name = "Product")]
+    public class Product : ViewComponent
     {
 
         private readonly DataContext _dataContext;
         private readonly IFileService _fileService;
-        public QuickView(DataContext dataContext,IFileService fileService)
+        public Product(DataContext dataContext, IFileService fileService)
         {
             _dataContext = dataContext;
             _fileService = fileService;

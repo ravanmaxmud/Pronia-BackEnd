@@ -38,8 +38,6 @@ namespace PrioniaApp.Areas.Client.Controllers
         public async Task<ActionResult> GetModelAsync(int id)
         {
             var product = await _dbContext.Products.Include(p => p.ProductImages)
-                .Include(p => p.ProductCatagories)
-                .Include(p => p.ProductTags)
                 .Include(p => p.ProductColors)
                 .Include(p => p.ProductSizes).FirstOrDefaultAsync(p => p.Id == id);
 
@@ -49,10 +47,16 @@ namespace PrioniaApp.Areas.Client.Controllers
                 return NotFound();
             }
 
-            var model = new ModalViewModel(product.Name,product.Description,product.Price,
+            var model = new ModalViewModel(product.Name, product.Description, product.Price,
                 product.ProductImages!.Take(1).FirstOrDefault() != null
                 ? _fileService.GetFileUrl(product.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                : String.Empty);
+                : String.Empty,
+                _dbContext.ProductColors.Include(pc => pc.Color).Where(pc => pc.ProductId == product.Id)
+                .Select(pc => new ModalViewModel.ColorViewModeL(pc.Color.Name,pc.Color.Id)).ToList(),
+                _dbContext.ProductSizes.Include(ps => ps.Size).Where(ps => ps.ProductId == product.Id)
+                .Select(ps => new ModalViewModel.SizeViewModeL(ps.Size.Title,ps.Size.Id)).ToList()
+                );
+
             return PartialView("~/Areas/Client/Views/Shared/_ProductModalPartial.cshtml", model);
         }
     }

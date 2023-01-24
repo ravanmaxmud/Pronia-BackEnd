@@ -40,20 +40,11 @@
             </div>
             <div class="selector-wrap color-option">
                 <span class="selector-title border-bottom-0">Color</span>
-                <select class="nice-select wide border-bottom-0 rounded-0">
-                    <option value="default">Black & White</option>
-                    <option value="blue">Blue</option>
-                    <option value="green">Green</option>
-                    <option value="red">Red</option>
-                </select>
+                <select class="nice-select wide border-bottom-0 rounded-0" asp-items="@(new SelectList(Model.Colors, nameof(ModalViewModel.ColorViewModeL.Id), nameof(ModalViewModel.ColorViewModeL.Name)))"></select>
             </div>
             <div class="selector-wrap size-option">
                 <span class="selector-title">Size</span>
-                <select class="nice-select wide rounded-0">
-                    <option value="medium">Medium Size & Poot</option>
-                    <option value="large">Large Size With Poot</option>
-                    <option value="small">Small Size With Poot</option>
-                </select>
+                <select class="nice-select wide rounded-0" asp-items="@(new SelectList(Model.Sizes, nameof(ModalViewModel.SizeViewModeL.Id), nameof(ModalViewModel.SizeViewModeL.Title)))"></select>
             </div>
             <p class="short-desc">
                @Model.Description

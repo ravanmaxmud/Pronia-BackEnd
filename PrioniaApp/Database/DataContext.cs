@@ -1,6 +1,6 @@
-﻿using DemoApplication.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Database.Models;
+using PrioniaApp.Extensions;
 
 namespace PrioniaApp.Database
 {

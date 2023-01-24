@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace DemoApplication.Extensions
+namespace PrioniaApp.Extensions
 {
     public static class ModelBuilderExtensions
     {

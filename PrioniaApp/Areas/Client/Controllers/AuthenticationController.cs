@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ActionFilter;
 using PrioniaApp.Areas.Client.ViewModels.Authentication;
 using PrioniaApp.Contracts.Identity;
 using PrioniaApp.Database;
@@ -8,7 +9,7 @@ using PrioniaApp.Services.Abstracts;
 namespace PrioniaApp.Areas.Client.Controllers
 {
     [Area("client")]
-    [Route("auth")]
+    [Route("authentication")]
     public class AuthenticationController : Controller
     {
         private readonly DataContext _dbContext;
@@ -51,10 +52,27 @@ namespace PrioniaApp.Areas.Client.Controllers
         }
 
 
+
         [HttpGet("register", Name = "client-auth-register")]
-        public async Task<IActionResult> Register(RegisterViewModel model)  
+        [ServiceFilter(typeof(ValidationCurrentUserAttribute))]
+        public async Task<IActionResult> Register()
         {
             return View();
+        }
+
+        [HttpPost("register", Name = "client-auth-register")]
+        public async Task<IActionResult> Register(RegisterViewModel model)  
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var emails = new List<string>();
+            emails.Add(model.Email);
+
+            await _userService.CreateAsync(model);
+
+            return RedirectToRoute("client-home-index");
         }
 
         [HttpGet("logout", Name = "client-authv-logout")]

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Infrastructure.Configurations;
 using System.Text.Json.Serialization;
 using PrioniaApp.Areas.Client.ActionFilter;
+using AspNetCore.IServiceCollection.AddIUrlHelper;
 
 namespace PrioniaApp.Infrastructure.Extensions
 {
@@ -20,10 +21,12 @@ namespace PrioniaApp.Infrastructure.Extensions
                 o.Cookie.Name = "Identity";
                 o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 o.LoginPath = "/authentication/login";
-                o.AccessDeniedPath = "/admin/auth/login";
+ 
             });
 
             services.AddHttpContextAccessor();
+
+            services.AddUrlHelper();
 
             services.AddScoped<ValidationCurrentUserAttribute>();
 

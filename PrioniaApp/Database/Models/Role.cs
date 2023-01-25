@@ -8,7 +8,5 @@ namespace PrioniaApp.Database.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public List<User> Users { get; set; }
-
-        public List<ClientSay> ClientSays { get; set; }
     }
 }

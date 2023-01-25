@@ -16,5 +16,6 @@ namespace PrioniaApp.Database.Models
         public int? RoleId { get; set; }
         public Role? Roles { get; set; }
         public UserActivation? UserActivation { get; set; }
+        public List<ClientSay> ClientSays { get; set; }
     }
 }

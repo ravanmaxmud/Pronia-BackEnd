@@ -8,27 +8,17 @@
             </div>
             <div class="card-body">
                 <div class="general-label">
-                    <form method="POST" asp-route="admin-nav-add">
+                    <form method="POST" asp-route="admin-clientsay-add">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                        <div class="form-group">
-                            <label asp-for="UserName"></label>
-                            <input asp-for="UserName" class="form-control">
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
                         <div class="form-group">
                             <label asp-for="Content"></label>
                             <input asp-for="Content" class="form-control">
                             <span asp-validation-for="Content" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="RoleIds"></label>
-                            <select asp-for="RoleIds" asp-items="@(new SelectList(Model.Roles, nameof(RolesListItemViewModel.Id), nameof(RolesListItemViewModel.Name)))"></select>
-                            <span asp-validation-for="RoleIds" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ImageName"></label>
-                            <input asp-for="ImageName" class="form-control">
-                            <span asp-validation-for="ImageName" class="text-danger"></span>
+                            <label asp-for="UserId"></label>
+                            <select asp-for="UserId" asp-items="@(new SelectList(Model.Users, nameof(UserListItemViewModel.Id), nameof(UserListItemViewModel.Name)))"></select>
+                            <span asp-validation-for="UserId" class="text-danger"></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>

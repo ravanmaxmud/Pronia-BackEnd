@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Services.Abstracts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace PrioniaApp.Services.Concretes
 {
@@ -35,29 +41,29 @@ namespace PrioniaApp.Services.Concretes
         }
 
 
+
         public async Task SendActivationUrlAsync(User user)
         {
             ArgumentNullException.ThrowIfNull(user);
 
-            var token = GenerateActivateToken();
-            var activationUrl = GenerateUrl(token,EMAIL_CONFIRMATION_ROUTE_NAME);
+            var token = GenerateActivationToken();
+            var activationUrl = GenerateUrl(token, EMAIL_CONFIRMATION_ROUTE_NAME);
+            await CreateUserActivationAsync(user, token, activationUrl, _activationExpireDate);
+            var activationMessageDto = PrepareActivationMessage(user.Email!, activationUrl);
 
-            await CreateUserActivationAsync(user,token,activationUrl,_activationExpireDate);
-            var activationTokenMessageDto = PrepareActivationMessage(user.Email,activationUrl);
-
-            _emailService.Send(activationTokenMessageDto);
-
+            _emailService.Send(activationMessageDto);
         }
 
-        private string GenerateActivateToken() 
+
+        private string GenerateActivationToken()
         {
-           return Guid.NewGuid().ToString();    
+            return Guid.NewGuid().ToString();
         }
 
-        private string GenerateUrl(string token,string routName) 
+        private string GenerateUrl(string token, string routeName)
         {
-            var request = _httpContextAccessor.HttpContext.Request;
-            return _urlHelper.RouteUrl(routName, new {token =token },request.Scheme,request.Host.Value)!;
+            var request = _httpContextAccessor.HttpContext!.Request;
+            return _urlHelper.RouteUrl(routeName, new { token = token }, request.Scheme, request.Host.Value)!;
         }
 
         private async Task<UserActivation> CreateUserActivationAsync(User user, string token, string activationUrL, DateTime expireDate)
@@ -67,7 +73,7 @@ namespace PrioniaApp.Services.Concretes
                 User = user,
                 ActivationToken = token,
                 ActivationUrl = activationUrL,
-                ExpiredDate = expireDate
+                ExpiredDate = expireDate,
             };
 
             await _dataContext.UserActivations.AddAsync(userActivation);
@@ -75,15 +81,14 @@ namespace PrioniaApp.Services.Concretes
             return userActivation;
         }
 
-        private MessageDto PrepareActivationMessage(string email , string activationUrl) 
+        private MessageDto PrepareActivationMessage(string email, string activationUrl)
         {
-            string body = EmailMessages.Body.ACTIVATION_MESSAGE.Replace(EmailMessageKeyword.ACTIVATION_URL, activationUrl);
+            string body = EmailMessages.Body.ACTIVATION_MESSAGE
+                .Replace(EmailMessageKeyword.ACTIVATION_URL, activationUrl);
 
             string subject = EmailMessages.Subject.ACTIVATION_MESSAGE;
 
             return new MessageDto(email, subject, body);
         }
-
-
     }
 }

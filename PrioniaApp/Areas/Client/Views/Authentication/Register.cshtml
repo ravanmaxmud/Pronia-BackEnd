@@ -25,32 +25,37 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 pt-5 pt-lg-0">
-                <form method="POST">
+                <form method="POST" asp-route="client-auth-register">
                     <div class="login-form">
                         <h4 class="login-title">Register</h4>
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <label>First Name</label>
-                                <input type="text" placeholder="First Name" />
+                                <input asp-for="FirstName" type="text" placeholder="First Name" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 col-12">
                                 <label>Last Name</label>
-                                <input type="text" placeholder="Last Name" />
+                                <input asp-for="LastName" type="text" placeholder="Last Name" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                             <div class="col-md-12">
                                 <label>Email Address*</label>
-                                <input type="email" placeholder="Email Address" />
+                                <input asp-for="Email" type="email" placeholder="Email Address" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label>Password</label>
-                                <input type="password" placeholder="Password" />
+                                <input asp-for="Password" type="password" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label>Confirm Password</label>
-                                <input type="password" placeholder="Confirm Password" />
+                                <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-custom-size lg-size btn-pronia-primary">
+                                <button type="submit" class="btn btn-custom-size lg-size btn-pronia-primary">
                                     Register
                                 </button>
                             </div>

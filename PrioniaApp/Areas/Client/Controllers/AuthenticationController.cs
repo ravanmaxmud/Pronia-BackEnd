@@ -25,7 +25,12 @@ namespace PrioniaApp.Areas.Client.Controllers
         [HttpGet("login",Name ="client-auth-login")]
         public async Task<IActionResult> Login()
         {
-            return View();
+            if (_userService.IsAuthenticated)
+            {
+                return RedirectToRoute("client-home-index");
+            }
+
+            return View(new LoginViewModel());
         }
 
         [HttpPost("login", Name = "client-auth-login")]
@@ -75,7 +80,7 @@ namespace PrioniaApp.Areas.Client.Controllers
             return RedirectToRoute("client-home-index");
         }
 
-        [HttpGet("logout", Name = "client-authv-logout")]
+        [HttpGet("logout", Name = "client-auth-logout")]
         public async Task<IActionResult> Logout() 
         {
             await _userService.SignOutAsync();
@@ -89,9 +94,12 @@ namespace PrioniaApp.Areas.Client.Controllers
         public async Task<IActionResult> Activate([FromRoute] string token)
         {
             var userActivation = await _dbContext.UserActivations.Include(u => u.User)
-                .FirstOrDefaultAsync(u => u.User.IsActive && u.ActivationToken == token);
+                .FirstOrDefaultAsync(u => !u.User!.IsActive && u.ActivationToken == token);
 
-          if (userActivation == null) return NotFound();
+            if (userActivation is null)
+            { 
+            return NotFound();
+            }  
 
             if (DateTime.Now > userActivation.ExpiredDate)
             {

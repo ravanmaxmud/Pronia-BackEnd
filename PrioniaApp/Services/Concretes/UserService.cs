@@ -52,7 +52,7 @@ namespace PrioniaApp.Services.Concretes
 
         public bool IsAuthenticated 
         {
-            get => _httpContextAccessor!.HttpContext.User.Identity!.IsAuthenticated;       
+            get =>_httpContextAccessor!.HttpContext.User.Identity!.IsAuthenticated;       
         }
 
         public string GetCurrentUserFullName()

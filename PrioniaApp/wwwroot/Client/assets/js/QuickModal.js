@@ -16,3 +16,9 @@
 
     $("#quickModal").modal("show");
 })
+
+
+
+$('.a-tag li a').filter(function () {
+    return this.href === location.href;
+}).addClass('active');

@@ -40,7 +40,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
                 return View(model);
             }
 
-            if (await _dbContext.Users.AnyAsync(u=> u.Roles.Name == RoleNames.ADMIN))
+            if (!await _dbContext.Users.AnyAsync(u=> u.Roles.Name == RoleNames.ADMIN))
             {
                 ModelState.AddModelError(String.Empty, "Role is not Admin");
                 return View(model);

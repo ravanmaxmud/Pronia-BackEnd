@@ -133,12 +133,12 @@
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="settingButton">
                                                 <li>
-                                                    <a class="dropdown-item" href="my-account.html">My account</a>
+                                                    <a asp-route="client-account-dashboard" class="dropdown-item">My account</a>
                                                 </li>
                                                 <li>
                                                     @if (userService.IsAuthenticated)
                                                     {
-                                                        <a class="dropdown-item" asp-route="client-auth-login">@userService.GetCurrentUserFullName()</a>
+                                                        <a class="dropdown-item" asp-route="client-account-dashboard">@userService.GetCurrentUserFullName()</a>
                                                     }
                                                     else
                                                     {
@@ -617,6 +617,7 @@
             <div class="global-overlay"></div>
         </header>
         <!-- Main Header Area End Here -->
+
         @RenderBody();
 
 

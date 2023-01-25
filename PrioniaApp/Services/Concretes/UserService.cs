@@ -1,9 +1,13 @@
-﻿using PrioniaApp.Areas.Client.ViewModels.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ViewModels.Authentication;
 using PrioniaApp.Contracts.Identity;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Exceptions;
 using PrioniaApp.Services.Abstracts;
+using System.Security.Claims;
 
 namespace PrioniaApp.Services.Concretes
 {
@@ -11,15 +15,17 @@ namespace PrioniaApp.Services.Concretes
     {
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IEmailService _emailService;
+        private readonly IUserActivationService _userActivationService;
         private User _currentUser;
 
-        public UserService(DataContext dataContext, IHttpContextAccessor httpContextAccessor, IEmailService emailService, User currentUser)
+        public UserService(
+            DataContext dataContext,
+            IHttpContextAccessor httpContextAccessor,
+            IUserActivationService userActivationService)
         {
             _dataContext = dataContext;
             _httpContextAccessor = httpContextAccessor;
-            _emailService = emailService;
-            _currentUser = currentUser;
+            _userActivationService = userActivationService;
         }
 
 
@@ -46,7 +52,7 @@ namespace PrioniaApp.Services.Concretes
 
         public bool IsAuthenticated 
         {
-            get => _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;       
+            get => _httpContextAccessor!.HttpContext.User.Identity!.IsAuthenticated;       
         }
 
         public string GetCurrentUserFullName()
@@ -54,39 +60,75 @@ namespace PrioniaApp.Services.Concretes
             return $"{CurrentUser.FirstName} {CurrentUser.LastName}";
         }
 
-        public Task<bool> CheckPasswordAsync(string? email, string? password)
+        public async Task<bool> CheckPasswordAsync(string? email, string? password)
         {
-            throw new NotImplementedException();
+            var model = await _dataContext.Users.FirstOrDefaultAsync(u=> u.Email == email);
+            if (model is null || !BCrypt.Net.BCrypt.Verify(password, model.Password))
+            {
+                return false;
+            }
+            return true;
         }
 
 
-        public Task SignInAsync(int id, string? role = null)
+        public async Task SignInAsync(int id, string? role = null)
         {
-            throw new NotImplementedException();
+            var claims = new List<Claim>
+            {
+                new Claim(CustomClaimNames.ID,id.ToString())
+            };
+            if (role is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var userPrincipal = new ClaimsPrincipal(identity);
+
+            await _httpContextAccessor.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
         }
 
-        public Task SignInAsync(string? email, string? password, string? role = null)
+        public async Task SignInAsync(string? email, string? password, string? role = null)
         {
-            throw new NotImplementedException();
+            var user = await _dataContext.Users.FirstAsync(u => u.Email == email);
+
+            if (user is not null && BCrypt.Net.BCrypt.Verify(password, user.Password) && user.IsActive == true)
+            {
+                await SignInAsync(user.Id, role);
+            }
         }
 
-        public Task SignOutAsync()
+        public async Task SignOutAsync()
         {
-            throw new NotImplementedException();
+            await _httpContextAccessor.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public async Task CreateAsync(RegisterViewModel model)
         {
-            var user = new User
+            var user = await CreateUser();
+
+            await _userActivationService.SendActivationUrlAsync(user);
+
+
+            await _dataContext.SaveChangesAsync();
+
+
+
+
+            async Task<User> CreateUser() 
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                CreatedAt = DateTime.Now,
-                UpdateAt = DateTime.Now,
-            };
-            await _dataContext.Users.AddAsync(user);
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                    CreatedAt = DateTime.Now,
+                    UpdateAt = DateTime.Now,
+                };
+                await _dataContext.Users.AddAsync(user);
+
+                return user;
+            }
 
         }
     }

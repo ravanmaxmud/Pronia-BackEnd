@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace DemoApplication.Contracts.Email
+namespace PrioniaApp.Contracts.Email
 {
     public class MessageDto
     {

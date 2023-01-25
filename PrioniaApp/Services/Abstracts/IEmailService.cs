@@ -1,4 +1,4 @@
-﻿using DemoApplication.Contracts.Email;
+﻿using PrioniaApp.Contracts.Email;
 
 namespace PrioniaApp.Services.Abstracts
 {

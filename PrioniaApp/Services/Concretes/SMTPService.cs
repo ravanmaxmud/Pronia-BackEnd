@@ -1,4 +1,4 @@
-﻿using DemoApplication.Contracts.Email;
+﻿using PrioniaApp.Contracts.Email;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using PrioniaApp.Options;

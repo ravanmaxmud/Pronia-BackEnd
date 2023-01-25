@@ -13,7 +13,7 @@ namespace PrioniaApp.Infrastructure.Configurations
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, SMTPService>();
-            services.AddScoped<IUserActivationService, UserActivation>();
+            services.AddScoped<IUserActivationService, UserActivationService>();
             services.AddScoped<ValidationCurrentUserAttribute>();
         }
     }

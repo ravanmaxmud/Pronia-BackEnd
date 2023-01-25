@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Admin.ViewModels.SubNavbars;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
+using System.Data;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/subnav")]
+    [Authorize(Roles = "admin")]
     public class SubNavbarController : Controller
     {
         private readonly DataContext _dataContext;

@@ -1,7 +1,10 @@
 ﻿$(document).on("click", ".show-product-modal", function (e) {
     e.preventDefault();
 
-    var url = e.target.href;
+    console.log(e.target)
+
+    var url = e.target.parentElement.href;
+
     console.log(url)
 
     fetch(url)

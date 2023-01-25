@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Admin.ViewModels.Navbars;
 using PrioniaApp.Areas.Client.ViewCompanents;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
+using System.Data;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/navbar")]
+    [Authorize(Roles = "admin")]
     public class NavbarController : Controller
     {
 

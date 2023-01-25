@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Admin.ViewModels.Product;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Services.Abstracts;
+using System.Data;
 using System.Linq;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/product")]
+    [Authorize(Roles = "admin")]
     public class ProductController : Controller
     {
         private readonly DataContext _dataContext;

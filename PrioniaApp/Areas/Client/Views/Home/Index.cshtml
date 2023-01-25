@@ -136,7 +136,7 @@
                          aria-labelledby="latest-tab">
                         <div class="product-item-wrap row">
 
-                            @await Component.InvokeAsync(nameof(LatestProduct));
+                            @await Component.InvokeAsync(nameof(Product),"NewProduct");
 
                         </div>
                     </div>
@@ -239,7 +239,7 @@
             <div class="col-lg-12">
                 <div class="swiper-container product-slider">
                     <div class="swiper-wrapper">
-                        @await Component.InvokeAsync(nameof(LatestProduct));
+                        @await Component.InvokeAsync(nameof(Product),"NewProduct");
                     </div>
                 </div>
             </div>

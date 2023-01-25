@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Admin.ViewModels.PaymentBenefits;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Services.Abstracts;
+using System.Data;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/payment")]
+    [Authorize(Roles = "admin")]
     public class PaymentBenefitController : Controller
     {
         private readonly DataContext _dataContext;

@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Admin.ViewModels.Slider;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Services.Abstracts;
+using System.Data;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/slider")]
+    [Authorize(Roles = "admin")]
     public class SliderController : Controller
     {
         private readonly DataContext _dataContext;

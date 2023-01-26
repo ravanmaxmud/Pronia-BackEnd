@@ -51,11 +51,11 @@ namespace PrioniaApp.Areas.Client.Controllers
         }
 
 
-        //[HttpGet("update", Name = "client-cartpagebasket-update")]
-        //public async Task<IActionResult> UpdateProduct()
-        //{
-        //    return ViewComponent(nameof(MiniBasket));
-        //}
+        [HttpGet("update", Name = "client-cartpagebasket-update")]
+        public async Task<IActionResult> UpdateProduct()
+        {
+            return ViewComponent(nameof(MiniBasket));
+        }
 
 
         [HttpGet("cart-page-delete/{id}", Name = "client-shop-basket-delete")]

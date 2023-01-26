@@ -1,3 +1,6 @@
+﻿
+$(document).ready(function () {
+    
 
 
 $(document).on("click", ".show-product-modal", function (e) {
@@ -55,16 +58,20 @@ $(document).on("click", ".remove-product-to-basket-btn", function (e) {
 
 
 $(document).on("click", ".plus-btn", function (e) {
-    e.preventDefault()
+    e.preventDefault();
+
     fetch(e.target.href)
         .then(response => response.text())
         .then(data => {
             $('.cartPageJs').html(data);
 
-            //fetch(e.target.nextElementSibling.href)
-            //    .then(response => response.text())
-            //    .then(data => {
-            //        $('.cart-block').html(data);
-            //    })
+            fetch(e.target.nextElementSibling.href)
+                .then(response => response.text())
+                .then(data => {
+                    $('.cart-block').html(data);
+                })
         })
 })
+
+
+});

@@ -17,8 +17,13 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="UserId"></label>
-                            <select asp-for="UserId" asp-items="@(new SelectList(Model.Users, nameof(UserListItemViewModel.Id), nameof(UserListItemViewModel.Name)))"></select>
+                            <select asp-for="UserId" asp-items="@(new SelectList(Model.Users, nameof(UserListItemViewModel.Id), nameof(UserListItemViewModel.Name),nameof(UserListItemViewModel.Email),nameof(UserListItemViewModel.Role)))"></select>
                             <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>ImageName</label>
+                            <input asp-for="ImageName" class="form-control">
+                            <span asp-validation-for="ImageName" class="text-danger"></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>

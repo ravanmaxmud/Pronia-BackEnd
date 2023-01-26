@@ -1,0 +1,94 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ViewModels.Basket;
+using PrioniaApp.Database;
+using PrioniaApp.Database.Models;
+using PrioniaApp.Services.Abstracts;
+using System.Text.Json;
+
+namespace PrioniaApp.Services.Concretes
+{
+    public class BasketService :IBasketService
+    {
+        private readonly DataContext _dataContext;
+        private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFileService _fileService;
+
+
+
+        public BasketService(DataContext dataContext, IUserService userService, IHttpContextAccessor httpContextAccessor, IFileService fileService)
+        {
+            _dataContext = dataContext;
+            _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
+            _fileService = fileService;
+        }
+
+        public async Task<List<BasketCookieViewModel>> AddBasketProductAsync(Product product)
+        {
+            if (_userService.IsAuthenticated)
+            {
+                await AddToDatabaseAsync();
+                return new List<BasketCookieViewModel>();
+            }
+
+            return AddCookie();
+
+
+
+
+            async Task AddToDatabaseAsync() 
+            {
+                var basketProduct = await _dataContext.BasketProducts
+                    .FirstOrDefaultAsync
+                        (p => p.Basket.UserId == _userService.CurrentUser.Id && p.ProductId == product.Id);
+
+                if (basketProduct is not null)
+                {
+                    basketProduct.Quantity++;
+                }
+                else
+                {
+                    var basket = await _dataContext.Baskets.FirstAsync(p =>p.UserId == _userService.CurrentUser.Id);
+
+                    basketProduct = new BasketProduct 
+                    {
+                        Quantity =1,
+                        Basket = basket,
+                        ProductId = product.Id
+                    };
+
+                    await _dataContext.BasketProducts.AddAsync(basketProduct);
+                }
+                    await _dataContext.SaveChangesAsync();
+            }
+
+            List<BasketCookieViewModel> AddCookie() 
+            {
+                var productCookieValue = _httpContextAccessor.HttpContext.Request.Cookies["products"];
+
+                var productCookieViewModel = productCookieValue is not null
+                   ? JsonSerializer.Deserialize<List<BasketCookieViewModel>>(productCookieValue) 
+                   : new List<BasketCookieViewModel> {};
+
+                var cookieViewModel = productCookieViewModel!.FirstOrDefault(pc => pc.Id == product.Id);
+                if (cookieViewModel is null)
+                {
+                    productCookieViewModel.Add
+                        (new BasketCookieViewModel(product.Id, product.Name, product.ProductImages.Take(1).FirstOrDefault() != null
+                        ? _fileService.GetFileUrl(product.ProductImages.Take(1).FirstOrDefault().ImageNameInFileSystem, Contracts.File.UploadDirectory.Products)
+                        : String.Empty, 1, product.Price, product.Price));
+                }
+                else
+                {
+                    cookieViewModel.Quantity += 1;
+                    cookieViewModel.Total = cookieViewModel.Quantity * cookieViewModel.Price;
+                }
+
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("products",JsonSerializer.Serialize(productCookieViewModel));
+
+                return productCookieViewModel;
+            };
+        }
+    }
+}

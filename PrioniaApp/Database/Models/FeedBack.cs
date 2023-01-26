@@ -2,8 +2,10 @@
 
 namespace PrioniaApp.Database.Models
 {
-    public class ClientSay : BaseEntity , IAuditable
+    public class FeedBack : BaseEntity, IAuditable
     {
+        public string? ImageName { get; set; }
+        public string? ImageNameInFileSystem { get; set; }
         public string Content { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }

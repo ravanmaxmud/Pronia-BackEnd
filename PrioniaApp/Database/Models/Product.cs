@@ -15,5 +15,6 @@ namespace PrioniaApp.Database.Models
         public List<ProductTag>? ProductTags { get; set; }
         public DateTime CreatedAt { get; set ; }
         public DateTime UpdateAt { get; set; }
+        public List<BasketProduct>? BasketProducts { get; set; }
     }
 }

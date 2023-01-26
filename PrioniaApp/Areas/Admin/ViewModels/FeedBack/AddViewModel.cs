@@ -4,6 +4,9 @@ namespace PrioniaApp.Areas.Admin.ViewModels.ClientSay
 {
     public class AddViewModel
     {
+        public IFormFile? ImageName { get; set; }
+        public string? İmageUrl { get; set; }
+
         [Required]
         public string Content { get; set; }
         [Required]

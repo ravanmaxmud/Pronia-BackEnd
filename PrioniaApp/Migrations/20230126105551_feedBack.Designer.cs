@@ -12,8 +12,8 @@ using PrioniaApp.Database;
 namespace PrioniaApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230125171920_ClientSay")]
-    partial class ClientSay
+    [Migration("20230126105551_feedBack")]
+    partial class feedBack
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,63 @@ namespace PrioniaApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("baskets", (string)null);
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BasketProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BasketId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BasketId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("basket-products", (string)null);
+                });
 
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>
                 {
@@ -53,34 +110,6 @@ namespace PrioniaApp.Migrations
                     b.ToTable("Catagoryies", (string)null);
                 });
 
-            modelBuilder.Entity("PrioniaApp.Database.Models.ClientSay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClientSays");
-                });
-
             modelBuilder.Entity("PrioniaApp.Database.Models.Color", b =>
                 {
                     b.Property<int>("Id")
@@ -102,6 +131,40 @@ namespace PrioniaApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Colors", (string)null);
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.FeedBack", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageNameInFileSystem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FeedBacks");
                 });
 
             modelBuilder.Entity("PrioniaApp.Database.Models.Navbar", b =>
@@ -558,6 +621,36 @@ namespace PrioniaApp.Migrations
                     b.ToTable("UserActivations", (string)null);
                 });
 
+            modelBuilder.Entity("PrioniaApp.Database.Models.Basket", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.User", "User")
+                        .WithOne("Basket")
+                        .HasForeignKey("PrioniaApp.Database.Models.Basket", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BasketProduct", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.Basket", "Basket")
+                        .WithMany("BasketProducts")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PrioniaApp.Database.Models.Product", "Product")
+                        .WithMany("BasketProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Basket");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>
                 {
                     b.HasOne("PrioniaApp.Database.Models.Catagory", "Parent")
@@ -567,10 +660,10 @@ namespace PrioniaApp.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("PrioniaApp.Database.Models.ClientSay", b =>
+            modelBuilder.Entity("PrioniaApp.Database.Models.FeedBack", b =>
                 {
                     b.HasOne("PrioniaApp.Database.Models.User", "User")
-                        .WithMany("ClientSays")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -696,6 +789,11 @@ namespace PrioniaApp.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PrioniaApp.Database.Models.Basket", b =>
+                {
+                    b.Navigation("BasketProducts");
+                });
+
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>
                 {
                     b.Navigation("Catagories");
@@ -715,6 +813,8 @@ namespace PrioniaApp.Migrations
 
             modelBuilder.Entity("PrioniaApp.Database.Models.Product", b =>
                 {
+                    b.Navigation("BasketProducts");
+
                     b.Navigation("ProductCatagories");
 
                     b.Navigation("ProductColors");
@@ -743,7 +843,7 @@ namespace PrioniaApp.Migrations
 
             modelBuilder.Entity("PrioniaApp.Database.Models.User", b =>
                 {
-                    b.Navigation("ClientSays");
+                    b.Navigation("Basket");
 
                     b.Navigation("UserActivation");
                 });

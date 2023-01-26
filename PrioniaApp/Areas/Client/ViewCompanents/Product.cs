@@ -25,36 +25,26 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             {
                 var newProduct = new IndexViewModel
                 {
-                    Products = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Take(4).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price,
+                    Products = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Take(4).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price,p.CreatedAt,
                     p.ProductImages!.Take(1).FirstOrDefault() != null
                     ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
                     : String.Empty,
                        p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
                     ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                    : String.Empty,
-                    p.ProductCatagories!.Select(pc => pc.Catagory).Select(c => new ProductListItemViewModel.CategoryViewModeL(c.Title, c.Parent.Title)).ToList(),
-                    p.ProductColors!.Select(pc => pc.Color).Select(c => new ProductListItemViewModel.ColorViewModeL(c.Name)).ToList(),
-                    p.ProductSizes!.Select(ps => ps.Size).Select(s => new ProductListItemViewModel.SizeViewModeL(s.Title)).ToList(),
-                    p.ProductTags!.Select(ps => ps.Tag).Select(s => new ProductListItemViewModel.TagViewModel(s.Title)).ToList()))
-                .ToListAsync(),
+                    : String.Empty)).ToListAsync()
                 };
 
                 return View(newProduct);
             }
             var model = new IndexViewModel
             {
-                Products = await _dataContext.Products.Take(7).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price,
-                p.ProductImages!.Take(1).FirstOrDefault() != null
-                ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                : String.Empty,
-                   p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
-                ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                : String.Empty,
-                p.ProductCatagories!.Select(pc => pc.Catagory).Select(c => new ProductListItemViewModel.CategoryViewModeL(c.Title, c.Parent.Title)).ToList(),
-                p.ProductColors!.Select(pc => pc.Color).Select(c => new ProductListItemViewModel.ColorViewModeL(c.Name)).ToList(),
-                p.ProductSizes!.Select(ps => ps.Size).Select(s => new ProductListItemViewModel.SizeViewModeL(s.Title)).ToList(),
-                p.ProductTags!.Select(ps => ps.Tag).Select(s => new ProductListItemViewModel.TagViewModel(s.Title)).ToList()))
-                 .ToListAsync(),
+                Products = await _dataContext.Products.Take(7).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price, p.CreatedAt,
+                    p.ProductImages!.Take(1).FirstOrDefault() != null
+                    ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                    : String.Empty,
+                       p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
+                    ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                    : String.Empty)).ToListAsync()
             };
 
             return View(model);

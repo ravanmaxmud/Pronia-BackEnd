@@ -13,13 +13,13 @@ namespace PrioniaApp.Areas.Admin.Controllers
     [Area("admin")]
     [Route("admin/clientsay")]
     [Authorize(Roles = "admin")]
-    public class ClientSayController : Controller
+    public class FeedBackController : Controller
     {
 
         private readonly DataContext _dataContext;
         private readonly IFileService _fileService;
 
-        public ClientSayController(DataContext dataContext, IFileService fileService)
+        public FeedBackController(DataContext dataContext, IFileService fileService)
         {
             _dataContext = dataContext;
             _fileService = fileService;
@@ -28,7 +28,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         [HttpGet("list", Name = "admin-clientsay-list")]
         public async Task<IActionResult> List()
         {
-            var model = await _dataContext.ClientSays.Select(s => new ListItemViewModel(s.Id, s.User.FirstName, s.User.Roles.Name)).ToListAsync();
+            var model = await _dataContext.FeedBacks.Select(s => new ListItemViewModel(s.Id, s.User.FirstName, s.User.Roles.Name,_fileService.GetFileUrl(s.ImageNameInFileSystem,UploadDirectory.Client))).ToListAsync();
 
             return View(model);
         }
@@ -38,7 +38,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         {
             var model = new AddViewModel
             {
-                Users = await _dataContext.Users.Select(u => new UserListItemViewModel(u.Id, u.FirstName, u.Roles.Name)).ToListAsync(),
+                Users = await _dataContext.Users.Select(u => new UserListItemViewModel(u.Id, u.FirstName, u.LastName,u.Email,u.Roles.Name)).ToListAsync(),
             };
 
             return View(model);
@@ -51,15 +51,28 @@ namespace PrioniaApp.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            var client = new PrioniaApp.Database.Models.ClientSay
-            {
-                Content = model.Content,
-                CreatedAt = DateTime.Now,
-                UserId = model.UserId,
-            };
-            await _dataContext.ClientSays.AddAsync(client);
+
+            var imageNameInSystem = await _fileService.UploadAsync(model.ImageName, UploadDirectory.Client);
+
+            AddFeedBack(model.ImageName.FileName, imageNameInSystem);
+
             await _dataContext.SaveChangesAsync();
+
             return RedirectToRoute("admin-clientsay-list");
+
+            async void AddFeedBack(string imageName, string imageNameInSystem)
+            {
+                var client = new PrioniaApp.Database.Models.FeedBack
+                {
+                    Content = model.Content,
+                    CreatedAt = DateTime.Now,
+                    UserId = model.UserId,
+                    ImageName = imageName,
+                    ImageNameInFileSystem = imageNameInSystem,
+                };
+
+                await _dataContext.FeedBacks.AddAsync(client);
+            }
         }
     }
 }

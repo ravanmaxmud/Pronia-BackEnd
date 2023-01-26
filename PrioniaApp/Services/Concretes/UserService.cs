@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Client.ViewModels.Authentication;
+using PrioniaApp.Areas.Client.ViewModels.Basket;
 using PrioniaApp.Contracts.Identity;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Exceptions;
 using PrioniaApp.Services.Abstracts;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace PrioniaApp.Services.Concretes
 {
@@ -105,6 +107,9 @@ namespace PrioniaApp.Services.Concretes
         public async Task CreateAsync(RegisterViewModel model)
         {
             var user = await CreateUser();
+            var basket = await CreateBasket();
+
+            await CreateBasketProduct();
 
             await _userActivationService.SendActivationUrlAsync(user);
 
@@ -114,7 +119,7 @@ namespace PrioniaApp.Services.Concretes
 
 
 
-            async Task<User> CreateUser() 
+            async Task<User> CreateUser()
             {
                 var user = new User
                 {
@@ -122,6 +127,7 @@ namespace PrioniaApp.Services.Concretes
                     LastName = model.LastName,
                     Email = model.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                    RoleId =6,
                     CreatedAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
                 };
@@ -129,6 +135,40 @@ namespace PrioniaApp.Services.Concretes
 
                 return user;
             }
+            async Task<Basket> CreateBasket() 
+            {
+                var basket = new Basket
+                {
+                   User = user,
+                   CreatedAt = DateTime.Now,
+                   UpdateAt = DateTime.Now
+                   
+                };
+                await _dataContext.Baskets.AddAsync(basket);
+                return basket;
+            };
+            async Task CreateBasketProduct()
+            {
+                var productCookieValue = _httpContextAccessor.HttpContext.Request.Cookies["products"];
+                if (productCookieValue is not null)
+                {
+                    var productsCookieViewModel = JsonSerializer.Deserialize<List<BasketCookieViewModel>>(productCookieValue);
+
+                    foreach (var cookieViewModel in productsCookieViewModel)
+                    {
+                        var product = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == cookieViewModel.Id);
+
+                        var basketProduct = new BasketProduct
+                        {
+                          Basket = basket,
+                          ProductId = product.Id,
+                          Quantity = cookieViewModel.Quantity
+                        };
+
+                        await _dataContext.BasketProducts.AddAsync(basketProduct);
+                    }
+                }
+            };
 
         }
     }

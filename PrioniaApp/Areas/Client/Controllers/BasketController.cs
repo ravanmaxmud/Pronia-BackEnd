@@ -70,7 +70,7 @@ namespace PrioniaApp.Areas.Client.Controllers
                 HttpContext.Response.Cookies.Append("products",JsonSerializer.Serialize(productCookieViewModel));
           
             await _dataContext.SaveChangesAsync();
-            return ViewComponent(nameof(MiniBasket));
+            return ViewComponent(nameof(MiniBasket),productCookieViewModel);
         }
     }
 }

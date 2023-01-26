@@ -7,20 +7,20 @@ using System.Text.Json;
 
 namespace PrioniaApp.Areas.Client.ViewCompanents
 {
-    [ViewComponent(Name = "MiniBasket")]
-    public class MiniBasket : ViewComponent
+    [ViewComponent(Name = "CartPage")]
+    public class CartPage : ViewComponent
     {
 
         private readonly DataContext _dataContext;
         private readonly IUserService _userService;
         private readonly IFileService _fileService;
 
-        public MiniBasket(DataContext dataContext, IUserService userService = null, IFileService fileService = null)
+        public CartPage(DataContext dataContext, IUserService userService = null, IFileService fileService = null)
         {
             _dataContext = dataContext;
             _userService = userService;
             _fileService = fileService;
-       }
+        }
 
         public async Task<IViewComponentResult> InvokeAsync(List<BasketCookieViewModel>? viewModels = null)
         {
@@ -33,8 +33,8 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
                    ? _fileService.GetFileUrl(p.Product.ProductImages.Take(1).FirstOrDefault().ImageNameInFileSystem, Contracts.File.UploadDirectory.Products)
                    : String.Empty,
                    p.Quantity, p.Product.Price, p.Product.Price * p.Quantity)).ToListAsync();
-               
-            
+
+
                 return View(model);
             }
 

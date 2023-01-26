@@ -6,5 +6,6 @@
         public List<PaymentBenefitsViewModel> PaymentBenefits { get; set; }
 
         public List<ProductListItemViewModel> Products { get; set; }
+        public List<FeedBackViewModel> FeedBacks { get; set; }
     }
 }

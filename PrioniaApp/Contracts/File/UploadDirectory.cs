@@ -5,6 +5,6 @@
         Products = 1,
         Slider = 2,
         PaymentBenefits = 4,
-        Client = 16,
+        Feedback = 16,
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PrioniaApp.Areas.Admin.ViewModels.ClientSay
+﻿namespace PrioniaApp.Areas.Admin.ViewModels.FeedBack
 {
     public class ListItemViewModel
     {

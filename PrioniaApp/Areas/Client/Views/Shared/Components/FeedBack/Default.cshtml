@@ -1,0 +1,47 @@
+﻿@using PrioniaApp.Areas.Client.ViewModels.Home
+@model IndexViewModel
+
+<div class="testimonial-area section-space-top-90 section-space-bottom-95">
+    <div class="container-fluid">
+        <div class="testimonial-bg"
+             data-bg-image="client/assets/images/testimonial/bg/1-1-1820x443.jpg">
+            <div class="section-title-wrap">
+                <h2 class="section-title">What Say Client</h2>
+                <p class="section-desc mb-0">
+                    Contrary to popular belief, Lorem Ipsum is not simply random
+                    text. It has roots in a piece of classical Latin literature
+                </p>
+            </div>
+        </div>
+        <div class="container custom-space">
+            <div class="swiper-container testimonial-slider with-bg">
+                <div class="swiper-wrapper">
+
+                    @foreach (var item in Model.FeedBacks)
+                    {
+                        <div class="swiper-slide testimonial-item">
+                            <div class="user-info mb-3">
+                                <div class="user-shape-wrap">
+                                    <div class="user-img">
+                                        <img src="~/@item.ImageUrl"
+                                         alt="User Image"
+                                         class="rounded-circle" width="77px" height="77px"/>
+                                    </div>
+                                </div>
+                                <div class="user-content text-charcoal">
+                                    <h4 class="user-name mb-1">@item.Name @item.SurName</h4>
+                                    <span class="user-occupation">@item.Role</span>
+                                </div>
+                            </div>
+                            <p class="user-comment mb-6">
+                                 @item.Content
+                            </p>
+                        </div>
+                    }                   
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination without-absolute"></div>
+            </div>
+        </div>
+    </div>
+</div>

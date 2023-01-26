@@ -1,12 +1,11 @@
 ﻿using Microsoft.Build.Framework;
 
-namespace PrioniaApp.Areas.Admin.ViewModels.ClientSay
+namespace PrioniaApp.Areas.Admin.ViewModels.FeedBack
 {
     public class AddViewModel
     {
-        public IFormFile? ImageName { get; set; }
-        public string? İmageUrl { get; set; }
 
+        public IFormFile? ImageName { get; set; }
         [Required]
         public string Content { get; set; }
         [Required]

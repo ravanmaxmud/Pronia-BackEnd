@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PrioniaApp.Areas.Admin.ViewModels.ClientSay;
+using PrioniaApp.Areas.Admin.ViewModels.FeedBack;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
 using PrioniaApp.Migrations;
@@ -28,7 +28,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         [HttpGet("list", Name = "admin-clientsay-list")]
         public async Task<IActionResult> List()
         {
-            var model = await _dataContext.FeedBacks.Select(s => new ListItemViewModel(s.Id, s.User.FirstName, s.User.Roles.Name,_fileService.GetFileUrl(s.ImageNameInFileSystem,UploadDirectory.Client))).ToListAsync();
+            var model = await _dataContext.FeedBacks.Select(s => new ListItemViewModel(s.Id, s.User.FirstName, s.User.Roles.Name,_fileService.GetFileUrl(s.ImageNameInFileSystem,UploadDirectory.Feedback))).ToListAsync();
 
             return View(model);
         }
@@ -52,7 +52,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
                 return View(model);
             }
 
-            var imageNameInSystem = await _fileService.UploadAsync(model.ImageName, UploadDirectory.Client);
+            var imageNameInSystem = await _fileService.UploadAsync(model.ImageName, UploadDirectory.Feedback);
 
             AddFeedBack(model.ImageName.FileName, imageNameInSystem);
 
@@ -73,6 +73,21 @@ namespace PrioniaApp.Areas.Admin.Controllers
 
                 await _dataContext.FeedBacks.AddAsync(client);
             }
+        }
+
+        [HttpPost("delete/{id}", Name = "admin-clientsay-delete")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var slider = await _dataContext.FeedBacks.FirstOrDefaultAsync(s => s.Id == id);
+            if (slider is null)
+            {
+                return NotFound();
+            }
+            await _fileService.DeleteAsync(slider.ImageNameInFileSystem, UploadDirectory.Feedback);
+            _dataContext.FeedBacks.Remove(slider);
+            await _dataContext.SaveChangesAsync();
+
+            return RedirectToRoute("admin-clientsay-list");
         }
     }
 }

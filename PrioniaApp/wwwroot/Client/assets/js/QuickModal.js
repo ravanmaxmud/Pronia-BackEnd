@@ -1,4 +1,4 @@
-﻿const { data } = require("jquery");
+
 
 $(document).on("click", ".show-product-modal", function (e) {
     e.preventDefault();
@@ -55,8 +55,7 @@ $(document).on("click", ".remove-product-to-basket-btn", function (e) {
 
 
 $(document).on("click", ".plus-btn", function (e) {
-    e.preventDefault();
-
+    e.preventDefault()
     fetch(e.target.href)
         .then(response => response.text())
         .then(data => {
@@ -69,4 +68,3 @@ $(document).on("click", ".plus-btn", function (e) {
             //    })
         })
 })
-

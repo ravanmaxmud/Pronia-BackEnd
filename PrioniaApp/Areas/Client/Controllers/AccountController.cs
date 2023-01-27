@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ViewModels.Account;
+using PrioniaApp.Database;
 
 namespace PrioniaApp.Areas.Client.Controllers
 {
@@ -8,6 +11,13 @@ namespace PrioniaApp.Areas.Client.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly DataContext _dataContext;
+
+        public AccountController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
         [HttpGet("dashboard",Name ="client-account-dashboard")]
         public IActionResult DashBoard()
         {
@@ -15,9 +25,13 @@ namespace PrioniaApp.Areas.Client.Controllers
         }
 
         [HttpGet("order", Name = "client-account-order")]
-        public IActionResult Order()
+        public async  Task<IActionResult> Order()
         {
-            return View();
+            var model = await _dataContext.Orders
+                .Select(b => new OrderViewModel(b.Id, b.CreatedAt, b.Status, b.SumTotalPrice))
+                .ToListAsync();
+
+            return View(model);
         }
 
         [HttpGet("address", Name = "client-account-address")]

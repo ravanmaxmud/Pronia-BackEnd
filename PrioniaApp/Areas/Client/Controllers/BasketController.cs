@@ -38,13 +38,15 @@ namespace PrioniaApp.Areas.Client.Controllers
             return ViewComponent(nameof(MiniBasket));
         }
 
-        [HttpGet("basket-delete/{id}", Name = "client-basket-delete")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id) 
+        [HttpGet("basket-delete/{productId}", Name = "client-basket-delete")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int productId) 
         {
+            var productCookieViewModel = new List<BasketCookieViewModel>();
+
             if (_userService.IsAuthenticated) 
             {
                 var basketProduct = await _dataContext.BasketProducts
-                    .FirstOrDefaultAsync(bp=> bp.Basket.UserId == _userService.CurrentUser.Id && bp.ProductId==id);
+                   .Include(b=> b.Basket).FirstOrDefaultAsync(bp=> bp.Basket.UserId == _userService.CurrentUser.Id && bp.ProductId== productId);
 
                 if (basketProduct is null)
                 {
@@ -52,8 +54,9 @@ namespace PrioniaApp.Areas.Client.Controllers
                 }
                 _dataContext.BasketProducts.Remove(basketProduct);
             }
-         
-                var product = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            else
+            {
+                var product = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
                 if (product is null)
                 {
                     return NotFound();
@@ -64,10 +67,12 @@ namespace PrioniaApp.Areas.Client.Controllers
                     return NotFound();
                 }
 
-                var productCookieViewModel = JsonSerializer.Deserialize<List<BasketCookieViewModel>>(productCookieValue);
+                 productCookieViewModel = JsonSerializer.Deserialize<List<BasketCookieViewModel>>(productCookieValue);
 
-                productCookieViewModel!.RemoveAll(pcvm => pcvm.Id == id);
-                HttpContext.Response.Cookies.Append("products",JsonSerializer.Serialize(productCookieViewModel));
+                productCookieViewModel!.RemoveAll(pcvm => pcvm.Id == productId);
+                HttpContext.Response.Cookies.Append("products", JsonSerializer.Serialize(productCookieViewModel));
+            }
+                
           
             await _dataContext.SaveChangesAsync();
             return ViewComponent(nameof(MiniBasket),productCookieViewModel);

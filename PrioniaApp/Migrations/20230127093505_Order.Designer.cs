@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrioniaApp.Database;
 
@@ -11,9 +12,11 @@ using PrioniaApp.Database;
 namespace PrioniaApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230127093505_Order")]
+    partial class Order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -747,7 +750,7 @@ namespace PrioniaApp.Migrations
             modelBuilder.Entity("PrioniaApp.Database.Models.OrderProduct", b =>
                 {
                     b.HasOne("PrioniaApp.Database.Models.Order", "Order")
-                        .WithMany("OrderProducts")
+                        .WithMany()
                         .HasForeignKey("OrderId");
 
                     b.HasOne("PrioniaApp.Database.Models.Product", "Product")
@@ -899,11 +902,6 @@ namespace PrioniaApp.Migrations
             modelBuilder.Entity("PrioniaApp.Database.Models.Navbar", b =>
                 {
                     b.Navigation("SubNavbars");
-                });
-
-            modelBuilder.Entity("PrioniaApp.Database.Models.Order", b =>
-                {
-                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("PrioniaApp.Database.Models.Product", b =>

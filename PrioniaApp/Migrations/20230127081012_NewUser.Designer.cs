@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrioniaApp.Database;
 
@@ -11,9 +12,11 @@ using PrioniaApp.Database;
 namespace PrioniaApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230127081012_NewUser")]
+    partial class NewUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,71 +195,6 @@ namespace PrioniaApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Navbars", (string)null);
-                });
-
-            modelBuilder.Entity("PrioniaApp.Database.Models.Order", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SumTotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("PrioniaApp.Database.Models.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("PrioniaApp.Database.Models.PaymentBenefit", b =>
@@ -733,34 +671,6 @@ namespace PrioniaApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PrioniaApp.Database.Models.Order", b =>
-                {
-                    b.HasOne("PrioniaApp.Database.Models.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PrioniaApp.Database.Models.OrderProduct", b =>
-                {
-                    b.HasOne("PrioniaApp.Database.Models.Order", "Order")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("PrioniaApp.Database.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("PrioniaApp.Database.Models.ProductCatagory", b =>
                 {
                     b.HasOne("PrioniaApp.Database.Models.Catagory", "Catagory")
@@ -901,11 +811,6 @@ namespace PrioniaApp.Migrations
                     b.Navigation("SubNavbars");
                 });
 
-            modelBuilder.Entity("PrioniaApp.Database.Models.Order", b =>
-                {
-                    b.Navigation("OrderProducts");
-                });
-
             modelBuilder.Entity("PrioniaApp.Database.Models.Product", b =>
                 {
                     b.Navigation("BasketProducts");
@@ -939,8 +844,6 @@ namespace PrioniaApp.Migrations
             modelBuilder.Entity("PrioniaApp.Database.Models.User", b =>
                 {
                     b.Navigation("Basket");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("UserActivation");
                 });

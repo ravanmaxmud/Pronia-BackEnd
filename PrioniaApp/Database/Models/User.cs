@@ -17,6 +17,6 @@ namespace PrioniaApp.Database.Models
         public Role? Roles { get; set; }
         public UserActivation? UserActivation { get; set; }
         public Basket? Basket { get; set; }
-        //public List<ClientSay> ClientSays { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

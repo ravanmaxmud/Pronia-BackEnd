@@ -28,7 +28,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             {
                 var model = await _dataContext.BasketProducts.Where(p => p.Basket.UserId == _userService.CurrentUser.Id)
                    .Select(p =>
-                   new BasketCookieViewModel(p.Id, p.Product.Name,
+                   new BasketCookieViewModel(p.ProductId, p.Product.Name,
                    p.Product.ProductImages.Take(1).FirstOrDefault()! != null
                    ? _fileService.GetFileUrl(p.Product.ProductImages.Take(1).FirstOrDefault().ImageNameInFileSystem, Contracts.File.UploadDirectory.Products)
                    : String.Empty,

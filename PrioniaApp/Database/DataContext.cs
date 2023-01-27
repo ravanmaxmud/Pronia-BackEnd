@@ -32,6 +32,9 @@ namespace PrioniaApp.Database
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketProduct> BasketProducts { get; set; }
         public DbSet<FeedBack> FeedBacks { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         //public DbSet<ClientSay> ClientSays { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace PrioniaApp.Database.Configurations
+namespace PrioniaApp.Database.Configuration
 {
     public class BasketConfiguration : IEntityTypeConfiguration<Basket>
     {

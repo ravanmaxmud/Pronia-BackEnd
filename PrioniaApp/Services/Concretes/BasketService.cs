@@ -40,8 +40,8 @@ namespace PrioniaApp.Services.Concretes
             async Task AddToDatabaseAsync() 
             {
                 var basketProduct = await _dataContext.BasketProducts
-                    .FirstOrDefaultAsync
-                        (p => p.Basket.UserId == _userService.CurrentUser.Id && p.ProductId == product.Id);
+                     .Include(b => b.Basket)
+                     .FirstOrDefaultAsync(bp => bp.Basket.User.Id == _userService.CurrentUser.Id && bp.ProductId == product.Id);
 
                 if (basketProduct is not null)
                 {
@@ -54,7 +54,7 @@ namespace PrioniaApp.Services.Concretes
                     basketProduct = new BasketProduct 
                     {
                         Quantity =1,
-                        Basket = basket,
+                        BasketId = basket.Id,
                         ProductId = product.Id
                     };
 

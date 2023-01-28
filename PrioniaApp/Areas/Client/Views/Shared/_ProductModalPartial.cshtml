@@ -51,16 +51,11 @@
                @Model.Description
             </p>
             <ul class="quantity-with-btn">
-                <li class="quantity">
-                    <div class="cart-plus-minus">
-                        <input class="cart-plus-minus-box"
-                               value="1"
-                               type="text" />
-                    </div>
-                </li>
+
                 <li class="add-to-cart">
-                    <a class="btn btn-custom-size lg-size btn-pronia-primary"
-                       href="cart.html">Add to cart</a>
+                    <a asp-route="client-basket-add"
+                           asp-route-id="@Model.Id"
+                       data-id="@Model.Id" class="add-product-to-basket-modal  btn btn-custom-size lg-size btn-pronia-primary">Add to cart</a>
                 </li>
                 <li class="wishlist-btn-wrap">
                     <a class="custom-circle-btn" href="wishlist.html">

@@ -1,14 +1,14 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using PrioniaApp.Areas.Client.ViewModels.Home
 @using PrioniaApp.Areas.Client.ViewCompanents
-@model IndexViewModel
+@model List<ProductListItemViewModel>
 
-@foreach (var product in Model.Products)
+@foreach (var product in Model)
 {
     <div class="col-xl-3 col-md-4 col-sm-6">
         <div class="product-item">
             <div class="product-img">
-                <a asp-route="client-shop-index" asp-route-id="@product.Id">
+                <a asp-route="client-shop-index" asp-route-id=@product.Id>
                     <img class="primary-img"
                      src="~/@product.MainImgUrl"
                      alt="Product Images" />

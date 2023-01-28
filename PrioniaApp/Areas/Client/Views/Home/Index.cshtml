@@ -115,7 +115,7 @@
                          aria-labelledby="featured-tab">
                         <div class="product-item-wrap row">
                           
-                            @await Component.InvokeAsync(nameof(Product));
+                            @await Component.InvokeAsync(nameof(Product))
 
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                          aria-labelledby="bestseller-tab">
                         <div class="product-item-wrap row">
 
-                            @await Component.InvokeAsync(nameof(Product));
+                            @await Component.InvokeAsync(nameof(Product),"BestProducts")
 
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                          aria-labelledby="latest-tab">
                         <div class="product-item-wrap row">
 
-                            @await Component.InvokeAsync(nameof(Product),"NewProduct");
+                            @await Component.InvokeAsync(nameof(Product),"NewProduct")
 
                         </div>
                     </div>

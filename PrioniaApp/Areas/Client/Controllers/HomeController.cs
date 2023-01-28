@@ -41,13 +41,15 @@ namespace PrioniaApp.Areas.Client.Controllers
                 .Include(p => p.ProductColors)
                 .Include(p => p.ProductSizes).FirstOrDefaultAsync(p => p.Id == id);
 
+            var basket = await _dbContext.BasketProducts.FirstOrDefaultAsync(p => p.ProductId == id);
+
 
             if (product is null)
             {
                 return NotFound();
             }
 
-            var model = new ModalViewModel(product.Name, product.Description, product.Price,
+            var model = new ModalViewModel(product.Id, product.Name, product.Description, product.Price,
                 product.ProductImages!.Take(1).FirstOrDefault() != null
                 ? _fileService.GetFileUrl(product.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
                 : String.Empty,

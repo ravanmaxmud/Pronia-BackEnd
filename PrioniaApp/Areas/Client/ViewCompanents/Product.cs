@@ -21,31 +21,44 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
 
         public async Task<IViewComponentResult> InvokeAsync(string slide)
         {
+            var productsQuery = _dataContext.Products.AsQueryable();
+
             if (slide == "NewProduct")
             {
-                var newProduct = new IndexViewModel
-                {
-                    Products = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Take(4).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price,p.CreatedAt,
-                    p.ProductImages!.Take(1).FirstOrDefault() != null
-                    ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                    : String.Empty,
-                       p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
-                    ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                    : String.Empty)).ToListAsync()
-                };
-
-                return View(newProduct);
+                productsQuery = productsQuery.OrderByDescending(p => p.CreatedAt).Take(4);
+                //var newProduct = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Take(4).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price, p.CreatedAt,
+                //p.ProductImages!.Take(1).FirstOrDefault() != null
+                //? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                //: String.Empty,
+                //   p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
+                //? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                //: String.Empty)).ToListAsync();
             }
-            var model = new IndexViewModel
+            else if (slide =="BestProducts")
             {
-                Products = await _dataContext.Products.Take(7).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price, p.CreatedAt,
-                    p.ProductImages!.Take(1).FirstOrDefault() != null
-                    ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                    : String.Empty,
-                       p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
-                    ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                    : String.Empty)).ToListAsync()
-            };
+                var productsBestQuery = 
+                    await _dataContext.OrderProducts
+                    .Include(p => p.Product)
+                    .GroupBy(p => p.ProductId)
+                    .OrderByDescending(p => p.Count()).Take(7).Select(p => p.Key).ToListAsync();
+
+                productsQuery = productsQuery.Where(p=> productsBestQuery.Contains(p.Id));
+            }
+            else
+            {
+                productsQuery = productsQuery.OrderBy(p => p.Price).Take(4);
+            }
+
+
+
+            var model = await productsQuery.Take(7).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price, p.CreatedAt,
+                 p.ProductImages!.Take(1).FirstOrDefault() != null
+                 ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                 : String.Empty,
+                    p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
+                 ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                 : String.Empty)).ToListAsync();
+            
 
             return View(model);
         }

@@ -42,7 +42,15 @@ $(document).ready(function () {
             })
     }))
 
+    $(document).on("click", ".add-product-to-basket-modal", function (e) {
+        e.preventDefault();
 
+        fetch(e.target.href)
+            .then(response => response.text())
+            .then(data => {
+                $('.cart-block').html(data);
+            })
+    })
 
 
 
@@ -73,6 +81,10 @@ $(document).ready(function () {
     })
 
 
+
+
+
+
     $(document).on("click", ".minus-btn", function (e) {
         e.preventDefault();
 
@@ -85,6 +97,7 @@ $(document).ready(function () {
                     .then(response => response.text())
                     .then(data => {
                         $('.cart-block').html(data);
+
                     })
             })
     })

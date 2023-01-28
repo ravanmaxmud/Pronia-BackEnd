@@ -2,8 +2,9 @@
 {
     public class ModalViewModel
     {
-        public ModalViewModel(string title, string description, int price, string imgUrl, List<ColorViewModeL> colors, List<SizeViewModeL> sizes)
+        public ModalViewModel(int id, string title, string description, int price, string imgUrl, List<ColorViewModeL> colors, List<SizeViewModeL> sizes)
         {
+            Id = id;
             Title = title;
             Description = description;
             Price = price;
@@ -12,6 +13,7 @@
             Sizes = sizes;
         }
 
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }

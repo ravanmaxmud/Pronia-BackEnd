@@ -28,7 +28,7 @@ namespace PrioniaApp.Areas.Client.Controllers
             var product = await _dbContext.Products.Include(p => p.ProductImages)
                 .Include(p => p.ProductColors)
                 .Include(p => p.ProductSizes)
-                .Include(p => p.ProductColors)
+                .Include(p => p.ProductCatagories)
                 .Include(p => p.ProductTags).FirstOrDefaultAsync(p => p.Id == id);
 
 

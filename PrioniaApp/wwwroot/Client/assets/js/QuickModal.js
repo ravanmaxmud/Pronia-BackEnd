@@ -42,6 +42,7 @@ $(document).ready(function () {
             })
     }))
 
+
     $(document).on("click", ".add-product-to-basket-modal", function (e) {
         e.preventDefault();
 

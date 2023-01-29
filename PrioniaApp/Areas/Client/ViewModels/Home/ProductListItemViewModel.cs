@@ -22,6 +22,11 @@
             HoverImgUrl = hoverImgUrl;
         }
 
+        public ProductListItemViewModel()
+        {
+
+        }
+
 
         
     }

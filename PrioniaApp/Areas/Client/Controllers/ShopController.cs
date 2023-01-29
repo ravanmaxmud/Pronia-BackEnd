@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ViewModels.ShopPage;
 using PrioniaApp.Areas.Client.ViewModels.Shop;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
@@ -26,7 +27,9 @@ namespace PrioniaApp.Areas.Client.Controllers
         {
             var product = await _dbContext.Products.Include(p => p.ProductImages)
                 .Include(p => p.ProductColors)
-                .Include(p => p.ProductSizes).FirstOrDefaultAsync(p => p.Id == id);
+                .Include(p => p.ProductSizes)
+                .Include(p => p.ProductColors)
+                .Include(p => p.ProductTags).FirstOrDefaultAsync(p => p.Id == id);
 
 
             if (product is null)
@@ -34,23 +37,46 @@ namespace PrioniaApp.Areas.Client.Controllers
                 return NotFound();
             }
 
-            var model = new ShopViewModel(product.Name, product.Description, product.Price,
-  
-                _dbContext.ProductColors.Include(pc => pc.Color).Where(pc => pc.ProductId == product.Id)
-                .Select(pc => new ShopViewModel.ColorViewModeL(pc.Color.Name, pc.Color.Id)).ToList(),
+            var catProducts = await _dbContext
+                .ProductCatagories.GroupBy(pc => pc.CatagoryId).Select(pc => pc.Key).ToListAsync();
 
-                _dbContext.ProductSizes.Include(ps => ps.Size).Where(ps => ps.ProductId == product.Id)
-                .Select(ps => new ShopViewModel.SizeViewModeL(ps.Size.Title, ps.Size.Id)).ToList(),
 
-                _dbContext.ProductCatagories.Include(ps => ps.Catagory).Where(ps => ps.ProductId == product.Id)
-                .Select(ps => new ShopViewModel.CatagoryViewModeL(ps.Catagory.Title, ps.Catagory.Id)).ToList(),
+            var model = new ShopViewModel
+            {
+                Title = product.Name,
+                Description = product.Description,
+                Price = product.Price,
 
-                  _dbContext.ProductTags.Include(ps => ps.Tag).Where(ps => ps.ProductId == product.Id)
-                .Select(ps => new ShopViewModel.TagViewModeL(ps.Tag.Title, ps.Tag.Id)).ToList(),
+                Colors = _dbContext.ProductColors.Include(pc => pc.Color).Where(pc => pc.ProductId == product.Id)
+                          .Select(pc => new ShopViewModel.ColorViewModeL(pc.Color.Name, pc.Color.Id)).ToList(),
 
-                  _dbContext.ProductImages.Where(p=> p.ProductId == product.Id).Select(p=> new ShopViewModel.ImageViewModeL(_fileService.GetFileUrl(p.ImageNameInFileSystem,UploadDirectory.Products))).ToList()
-                );
+                Sizes = _dbContext.ProductSizes.Include(ps => ps.Size).Where(ps => ps.ProductId == product.Id)
+                       .Select(ps => new ShopViewModel.SizeViewModeL(ps.Size.Title, ps.Size.Id)).ToList(),
+
+                Catagories = _dbContext.ProductCatagories.Include(ps => ps.Catagory).Where(ps => ps.ProductId == product.Id)
+                         .Select(ps => new ShopViewModel.CatagoryViewModeL(ps.Catagory.Title, ps.Catagory.Id)).ToList(),
+
+                Tags = _dbContext.ProductTags.Include(ps => ps.Tag).Where(ps => ps.ProductId == product.Id)
+                      .Select(ps => new ShopViewModel.TagViewModeL(ps.Tag.Title, ps.Tag.Id)).ToList(),
+
+                Images = _dbContext.ProductImages.Where(p => p.ProductId == product.Id)
+                .Select(p => new ShopViewModel.ImageViewModeL
+                (_fileService.GetFileUrl(p.ImageNameInFileSystem, UploadDirectory.Products))).ToList(),
+
+
+                Products = await _dbContext.ProductCatagories.Include(p => p.Product).Where(pc => pc.ProductId != product.Id)
+                .Select(pc => new ListItemViewModel(pc.ProductId, pc.Product.Name, pc.Product.Price, pc.Product.CreatedAt,
+                pc.Product.ProductImages.Take(1).FirstOrDefault() != null
+                ? _fileService.GetFileUrl(pc.Product.ProductImages.Take(1).FirstOrDefault().ImageNameInFileSystem, UploadDirectory.Products)
+                : String.Empty,
+                pc.Product.ProductImages.Skip(1).Take(1).FirstOrDefault() != null
+                ? _fileService.GetFileUrl(pc.Product.ProductImages.Skip(1).Take(1).FirstOrDefault().ImageNameInFileSystem, UploadDirectory.Products)
+                : String.Empty)).ToListAsync(),
+
+            };
+
             return View(model);
         }
+
     }
 }

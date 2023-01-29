@@ -33,6 +33,15 @@
 
         public ListItemViewModel() { }
 
+        public ListItemViewModel(int id, string name, int price, DateTime createdAt, string mainImgUrl, string hoverImgUrl)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            CreatedAt = createdAt;
+            MainImgUrl = mainImgUrl;
+            HoverImgUrl = hoverImgUrl;
+        }
 
         public class CategoryViewModeL
         {

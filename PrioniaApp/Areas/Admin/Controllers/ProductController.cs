@@ -30,7 +30,7 @@ namespace PrioniaApp.Areas.Admin.Controllers
         [HttpGet("list", Name = "admin-product-list")]
         public async Task<IActionResult> List()
         {
-            var model = await _dataContext.Products.Select(p => new ListItemViewModel(p.Id, p.Name, p.Rate, p.Description,
+            var model = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Select(p => new ListItemViewModel(p.Id, p.Name, p.Rate, p.Description,
                 p.Price,
                 p.CreatedAt,
                 p.ProductCatagories.Select(pc => pc.Catagory).Select(c => new ListItemViewModel.CategoryViewModeL(c.Title, c.Parent.Title)).ToList(),

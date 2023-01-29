@@ -22,7 +22,6 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
         public async Task<IViewComponentResult> InvokeAsync(string slide)
         {
             var productsQuery = _dataContext.Products.AsQueryable();
-
             if (slide == "NewProduct")
             {
                 productsQuery = productsQuery.OrderByDescending(p => p.CreatedAt).Take(4);
@@ -40,13 +39,14 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
                     await _dataContext.OrderProducts
                     .Include(p => p.Product)
                     .GroupBy(p => p.ProductId)
-                    .OrderByDescending(p => p.Count()).Take(7).Select(p => p.Key).ToListAsync();
+                    .OrderByDescending(p => p.Count()).Take(7).Select(p => p.Key)
+                    .ToListAsync();
 
                 productsQuery = productsQuery.Where(p=> productsBestQuery.Contains(p.Id));
             }
             else
             {
-                productsQuery = productsQuery.OrderBy(p => p.Price).Take(4);
+                productsQuery = productsQuery.OrderBy(p => p.Price);
             }
 
 

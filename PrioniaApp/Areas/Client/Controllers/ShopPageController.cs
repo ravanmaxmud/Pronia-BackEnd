@@ -30,9 +30,8 @@ namespace PrioniaApp.Areas.Client.Controllers
 
 
         [HttpGet("index", Name = "client-shoppage-index")]
-        public async Task<IActionResult> Index(string searchBy, string search)
+        public async Task<IActionResult> Index(string searchBy, string search, [FromQuery] int? categoryId, [FromQuery] int? colorId)
         {
-
             var newProduct = new List<ListItemViewModel>();
             if (searchBy == "Name")
             {
@@ -49,9 +48,31 @@ namespace PrioniaApp.Areas.Client.Controllers
                                   p.ProductTags.Select(p => p.Tag).Select(p => new TagViewModel(p.Title)).ToList()
                                   )).ToListAsync();
             }
+            else if(categoryId is not null || colorId is not null)
+            {
+                newProduct = await _dataContext.Products
+                    .Include(p => p.ProductCatagories)
+                    .Include(p => p.ProductColors)
+                    .Where(p => categoryId == null || p.ProductCatagories!.Any(pc => pc.CatagoryId == categoryId))
+                    .Where(p => colorId == null || p.ProductColors!.Any(pc => pc.ColorId == colorId))
+                    .Select(p => new ListItemViewModel(p.Id, p.Name, p.Description, p.Price,
+                                 p.ProductImages.Take(1).FirstOrDefault() != null
+                                 ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                                 : String.Empty,
+                                  p.ProductImages.Skip(1).Take(1).FirstOrDefault() != null
+                                 ? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
+                                 : String.Empty,
+                                  p.ProductCatagories.Select(p => p.Catagory).Select(p => new CategoryViewModeL(p.Title, p.Parent.Title)).ToList(),
+                                  p.ProductColors.Select(p => p.Color).Select(p => new ColorViewModeL(p.Name)).ToList(),
+                                  p.ProductSizes.Select(p => p.Size).Select(p => new SizeViewModeL(p.Title)).ToList(),
+                                  p.ProductTags.Select(p => p.Tag).Select(p => new TagViewModel(p.Title)).ToList()
+                                  )).ToListAsync();
+
+            }
             else
             {
-                newProduct = await _dataContext.Products.Select(p => new ListItemViewModel(p.Id, p.Name, p.Description, p.Price,
+                newProduct = await _dataContext.Products
+                    .Select(p => new ListItemViewModel(p.Id, p.Name, p.Description, p.Price,
                                  p.ProductImages.Take(1).FirstOrDefault() != null
                                  ? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
                                  : String.Empty,
@@ -64,7 +85,6 @@ namespace PrioniaApp.Areas.Client.Controllers
                                   p.ProductTags.Select(p => p.Tag).Select(p => new TagViewModel(p.Title)).ToList()
                                   )).ToListAsync();
             }
-
             return View(newProduct);
 
         }

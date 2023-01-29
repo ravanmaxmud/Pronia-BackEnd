@@ -1,18 +1,9 @@
-﻿namespace PrioniaApp.Areas.Client.ViewModels.Shop
+﻿using PrioniaApp.Areas.Client.ViewModels.ShopPage;
+
+namespace PrioniaApp.Areas.Client.ViewModels.Shop
 {
     public class ShopViewModel
     {
-        public ShopViewModel(string title, string description, int price, List<ColorViewModeL> colors, List<SizeViewModeL> sizes, List<CatagoryViewModeL> catagories, List<TagViewModeL> tags, List<ImageViewModeL> images)
-        {
-            Title = title;
-            Description = description;
-            Price = price;
-            Colors = colors;
-            Sizes = sizes;
-            Catagories = catagories;
-            Tags = tags;
-            Images = images;
-        }
 
         public string Title { get; set; }
         public string Description { get; set; }
@@ -22,6 +13,8 @@
         public List<CatagoryViewModeL> Catagories { get; set; }
         public List<TagViewModeL> Tags { get; set; }
         public List<ImageViewModeL> Images { get; set; }
+
+        public List<ListItemViewModel> Products { get; set; }
 
 
 

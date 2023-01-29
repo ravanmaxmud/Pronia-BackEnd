@@ -143,7 +143,7 @@
                                                     else
                                                     {
                                                         <a class="dropdown-item" asp-route="client-auth-login">Login</a>
-                                                        <a class="dropdown-item" asp-route="client-auth-register">Register</a>   
+                                                        <a class="dropdown-item" asp-route="client-auth-register">Register</a>
                                                     }
                                                 </li>
                                             </ul>
@@ -492,25 +492,46 @@
                                     data-tippy-theme="sharpborder"></button>
                         </div>
                         <div class="modal-body">
+
+                            <!--Modal Search-->
                             <div class="modal-search">
                                 <span class="searchbox-info">
                                     Start typing and press Enter to search or ESC to
                                     close
                                 </span>
-                                <form action="#" class="hm-searchbox">
-                                    <input type="text"
-                                           name="Search..."
-                                           value="Search..."
-                                           onblur="if(this.value==''){this.value='Search...'}"
-                                           onfocus="if(this.value=='Search...'){this.value=''}"
-                                           autocomplete="off" />
-                                    <button class="search-btn"
-                                            type="submit"
-                                            aria-label="searchbtn">
-                                        <i class="pe-7s-search"></i>
-                                    </button>
-                                </form>
+
+                                <div class="hm-searchbox">
+                                    @using(Html.BeginForm("Search","Home",FormMethod.Get))
+                                    {
+
+                                    <div class="d-none">
+                                        <b>Search By :</b>
+                                        @Html.RadioButton("searchBy","Name",true)<text>Name</text>
+                                        <br />
+                                    </div>
+
+                                    @Html.TextBox("search", null , new { @style=" height: 100px;  background-color: transparent;  border: 0;  border-bottom: 1px solid #ffffff;  color: #ffffff; line-height: 100px; width: 100%; text-align: center; font-size: 30px; padding-right: 55px; font-weight: 300;"})
+
+
+                                    <button class="search-btn" type="submit" aria-label="searchbtn"><i class="pe-7s-search"></i></button>
+
+                                    }
+                                </div>
+
+                                @*     <input type="text"
+                                name="Search..."
+                                value="Search..."
+                                onblur="if(this.value==''){this.value='Search...'}"
+                                onfocus="if(this.value=='Search...'){this.value=''}"
+                                autocomplete="off" />
+                                <button class="search-btn"
+                                type="submit"
+                                aria-label="searchbtn">
+                                <i class="pe-7s-search"></i>
+                                </button>*@
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -527,7 +548,6 @@
             <div class="global-overlay"></div>
         </header>
         <!-- Main Header Area End Here -->
-
         @RenderBody();
 
 
@@ -731,7 +751,6 @@
                                 data-tippy-theme="sharpborder"></button>
                     </div>
                     <div class="modal-body product-details-modal">
-
                     </div>
                 </div>
             </div>

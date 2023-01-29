@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Client.ViewModels.ShopPage;
 using PrioniaApp.Areas.Client.ViewModels.Home;
 using PrioniaApp.Areas.Client.ViewModels.Home.Modal;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
 using PrioniaApp.Database.Models;
 using PrioniaApp.Services.Abstracts;
+using static PrioniaApp.Areas.Client.ViewModels.ShopPage.ListItemViewModel;
 
 namespace PrioniaApp.Areas.Client.Controllers
 {
@@ -60,6 +62,16 @@ namespace PrioniaApp.Areas.Client.Controllers
                 );
 
             return PartialView("~/Areas/Client/Views/Shared/_ProductModalPartial.cshtml", model);
+        }
+
+
+
+        [HttpGet("indexsearch", Name = "client-homesearch-index")]
+        public async Task<IActionResult> Search(string searchBy, string search)
+        {
+
+            return RedirectToAction("Index", "ShopPage", new { searchBy = searchBy, search =search});
+
         }
     }
 }

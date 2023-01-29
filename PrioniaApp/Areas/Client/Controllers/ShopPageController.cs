@@ -38,7 +38,7 @@ namespace PrioniaApp.Areas.Client.Controllers
             {
                 productsQuery = productsQuery.Where(p => p.Name.StartsWith(search) || Convert.ToString(p.Price).StartsWith(search) || search == null);
             }
-            else if(categoryId is not null || colorId is not null)
+            else if(categoryId is not null || colorId is not null || tagId is not null)
             {
                 productsQuery = productsQuery.Include(p => p.ProductCatagories)
                     .Include(p => p.ProductColors)

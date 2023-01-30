@@ -19,7 +19,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             _fileService = fileService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string slide)
+        public async Task<IViewComponentResult> InvokeAsync(string? slide=null)
         {
             var productsQuery = _dataContext.Products.AsQueryable();
             if (slide == "NewProduct")

@@ -104,4 +104,61 @@ $(document).ready(function () {
     })
 
 
+    //$(document).on("click", ".select-catagory", function (e) {
+    //    e.preventDefault();
+
+    //    console.log(e.target.href)
+    //    fetch(e.target.href)
+    //        .then(response => response.text())
+    //        .then(data => {
+    //            $('.shoppage-product').html(data);
+    //        })
+    //})
+
+
+    $(document).on("change", ".searchproductPrice", function (e)
+    {
+        e.preventDefault();
+
+        let minPrice = e.target.previousElementSibling.children[0].children[3].innerText.slice(1);
+        let MinPrice = parseInt(minPrice);
+
+        let maxPrice = e.target.previousElementSibling.children[0].children[4].innerText.slice(1);
+        let MaxPrice = parseInt(maxPrice);
+        let aHref = document.querySelector('.shopping-cart').href;
+
+        console.log(MinPrice);
+        console.log(MaxPrice);
+        console.log(aHref)
+
+        $.ajax(
+            {
+                url: aHref,
+
+                data: {
+                    minPrice: MinPrice,
+                    maxPrice: MaxPrice
+
+                },
+
+                success: function (response) {
+                    //$(".viewcompadd").html(null);
+                    console.log(response)
+                    $(".viewcompadd").html(response);
+
+
+
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
+
+
+    })
+
+
 });

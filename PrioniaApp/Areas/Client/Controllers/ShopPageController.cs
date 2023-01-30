@@ -30,19 +30,24 @@ namespace PrioniaApp.Areas.Client.Controllers
 
 
         [HttpGet("index", Name = "client-shoppage-index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchBy, string search)
         {
+            ViewBag.SearchBy = searchBy;
+            ViewBag.Search = search;
+
             return View();
         }
 
 
         [HttpGet("Filter", Name = "client-shoppage-filter")]
-        public async Task<IActionResult> Filter(string? searchBy=null,
-            string? Search = null,  int? MinPrice=null, 
-            int? MaxPrice = null, [FromQuery] int? categoryId=null, [FromQuery] int? colorId=null, [FromQuery] int? tagId=null)
+        public async Task<IActionResult> Filter(string? searchBy = null,
+            string? search = null, int? MinPrice = null,
+            int? MaxPrice = null, [FromQuery] int? categoryId = null, [FromQuery] int? colorId = null, [FromQuery] int? tagId = null)
         {
 
-            return ViewComponent(nameof(ShopPageProduct) , new { searchBy = searchBy , Search = Search, MinPrice = MinPrice, MaxPrice = MaxPrice, categoryId = categoryId , colorId = colorId , tagId = tagId });
+            return ViewComponent(nameof(ShopPageProduct), new { searchBy = searchBy, 
+                search = search, MinPrice = MinPrice, MaxPrice = MaxPrice,
+                categoryId = categoryId, colorId = colorId, tagId = tagId });
 
         }
     }

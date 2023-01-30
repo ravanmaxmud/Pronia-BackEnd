@@ -23,7 +23,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string? searchBy = null,
-            string? Search = null, int? MinPrice = null,
+            string? search = null, int? MinPrice = null,
             int? MaxPrice = null, [FromQuery] int? categoryId = null, [FromQuery] int? colorId = null, [FromQuery] int? tagId = null)
         {
 
@@ -31,7 +31,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
 
             if (searchBy == "Name")
             {
-                productsQuery = productsQuery.Where(p => p.Name.StartsWith(Search) || Convert.ToString(p.Price).StartsWith(Search) || Search == null);
+                productsQuery = productsQuery.Where(p => p.Name.StartsWith(search) || Convert.ToString(p.Price).StartsWith(search) || search == null);
             }
             else if (MinPrice is not null && MaxPrice is not null)
             {

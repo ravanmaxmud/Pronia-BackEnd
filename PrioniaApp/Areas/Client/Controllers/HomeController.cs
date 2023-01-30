@@ -70,7 +70,7 @@ namespace PrioniaApp.Areas.Client.Controllers
         public async Task<IActionResult> Search(string searchBy, string search)
         {
 
-            return RedirectToRoute("client-shoppage-filter", new { searchBy = searchBy, search = search });
+            return RedirectToRoute("client-shoppage-index", new { searchBy = searchBy, search = search });
 
         }
     }

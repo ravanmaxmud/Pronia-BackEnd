@@ -1,9 +1,4 @@
-﻿const { data } = require("jquery");
-
-$(document).ready(function () {
-
-
-
+﻿$(document).ready(function () {
     $(document).on("click", ".show-product-modal", function (e) {
         e.preventDefault();
 
@@ -259,42 +254,41 @@ $(document).ready(function () {
 
 
 
-    $(document).on("click", ".search-btn-product", function (e) {
-        e.preventDefault();
-        let input = document.querySelector(".search-box-product");
-        console.log(input)
-        let Search = input.value;
+    //$(document).on("click", ".search-btn-product", function (e) {
+    //    e.preventdefault();
+    //    let input = document.queryselector(".search-box-product");
+    //    console.log(input)
+    //    let search = input.value;
+    //    console.log(search);
 
-        console.log(search);
-        let aHref = document.querySelector(".shoppage-url").href;
+    //    let ahref = e.target.href;
 
-        console.log(aHref)
+    //    console.log(ahref)
 
-        $.ajax(
-            {
-                url: aHref,
+    //    //$.ajax(
+    //    //    {
+    //    //        url: ahref,
 
-                data: {
+    //    //        data: {
+    //    //            search: search,
 
-                    Search: Search,
+    //    //        },
 
-                },
-
-                success: function (response) {
-                    console.log(data);
-                   /* $('.filtered-area').html(response);*/
-
-
-                },
-                error: function (err) {
-                    $(".product-details-modal").html(err.responseText);
-
-                }
-
-            });
+    //    //        success: function (response) {
+    //    //            console.log(data);
+    //    //           /* $('.filtered-area').html(response);*/
 
 
-    })
+    //    //        },
+    //    //        error: function (err) {
+    //    //            $(".product-details-modal").html(err.responsetext);
+
+    //    //        }
+
+    //    //    });
+
+
+    //})
 
 
 

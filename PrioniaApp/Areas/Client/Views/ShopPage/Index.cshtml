@@ -36,7 +36,7 @@
                                     </div>
 
 
-                                    @Html.TextBox("Search",null,new { @class="search-box-product"})
+                                    @Html.TextBox("search", null, new { @class="search-box-product"})
                                     <button class="search-btn-product" type="submit" aria-label="searchbtn"><i class="pe-7s-search"></i></button>
                                 }
 
@@ -157,7 +157,7 @@
                              role="tabpanel"
                              aria-labelledby="grid-view-tab">
                             <div class="shoppage-product viewcompadd product-grid-view row g-y-20 filtered-area">
-                                @await Component.InvokeAsync(nameof(ShopPageProduct))
+                                @await Component.InvokeAsync(nameof(ShopPageProduct), new { searchBy = ViewBag.SearchBy, search = ViewBag.Search })
 
                             </div>
                         </div>

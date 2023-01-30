@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Contracts.File;
 using PrioniaApp.Database;
-using PrioniaApp.Services.Abstracts;
 using PrioniaApp.Areas.Client.ViewModels.ShopPage;
+using PrioniaApp.Database.Models;
+using PrioniaApp.Services.Abstracts;
 using static PrioniaApp.Areas.Client.ViewModels.ShopPage.ListItemViewModel;
 
 namespace PrioniaApp.Areas.Client.ViewCompanents
 {
+
     [ViewComponent(Name = "ShopPageProduct")]
     public class ShopPageProduct : ViewComponent
     {
@@ -20,17 +22,20 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             _fileService = fileService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string? searchBy = null, string? search = null, int? minPrice = null, int? maxPrice = null, [FromQuery] int? categoryId = null, [FromQuery] int? colorId = null, [FromQuery] int? tagId = null)
+        public async Task<IViewComponentResult> InvokeAsync(string? searchBy = null,
+            string? Search = null, int? MinPrice = null,
+            int? MaxPrice = null, [FromQuery] int? categoryId = null, [FromQuery] int? colorId = null, [FromQuery] int? tagId = null)
         {
+
             var productsQuery = _dataContext.Products.AsQueryable();
 
             if (searchBy == "Name")
             {
-                productsQuery = productsQuery.Where(p => p.Name.StartsWith(search) || Convert.ToString(p.Price).StartsWith(search) || search == null);
+                productsQuery = productsQuery.Where(p => p.Name.StartsWith(Search) || Convert.ToString(p.Price).StartsWith(Search) || Search == null);
             }
-            else if (minPrice is not null && maxPrice is not null)
+            else if (MinPrice is not null && MaxPrice is not null)
             {
-                productsQuery = productsQuery.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
+                productsQuery = productsQuery.Where(p => p.Price >= MinPrice && p.Price <= MaxPrice);
             }
             else if (categoryId is not null || colorId is not null || tagId is not null)
             {
@@ -38,7 +43,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
                     .Include(p => p.ProductColors)
                     .Include(p => p.ProductTags)
                     .Where(p => categoryId == null || p.ProductCatagories!.Any(pc => pc.CatagoryId == categoryId))
-                    .Where(p => colorId == null || p.ProductColors!.Any(pc => pc.ColorId == colorId))
+                .Where(p => colorId == null || p.ProductColors!.Any(pc => pc.ColorId == colorId))
                     .Where(p => tagId == null || p.ProductTags!.Any(pt => pt.TagId == tagId));
 
             }
@@ -61,8 +66,6 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
                                 )).ToListAsync();
 
             return View(newProduct);
-
         }
     }
-
 }

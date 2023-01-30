@@ -1,4 +1,5 @@
-﻿
+﻿const { data } = require("jquery");
+
 $(document).ready(function () {
 
 
@@ -16,7 +17,7 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(data => {
                 $('.product-details-modal').html(data);
-                console.log(data)
+               
             })
 
         $("#quickModal").modal("show");
@@ -104,16 +105,115 @@ $(document).ready(function () {
     })
 
 
-    //$(document).on("click", ".select-catagory", function (e) {
-    //    e.preventDefault();
 
-    //    console.log(e.target.href)
-    //    fetch(e.target.href)
-    //        .then(response => response.text())
-    //        .then(data => {
-    //            $('.shoppage-product').html(data);
-    //        })
-    //})
+
+    $(document).on("click", '.select-catagory', function (e) {
+        e.preventDefault();
+        let aHref = e.target.href;
+        let category = e.target.previousElementSibling
+        let CategoryId = category.value;
+       
+
+        console.log(CategoryId)
+
+        console.log(aHref)
+
+
+
+        $.ajax(
+            {
+                type: "GET",
+                url: aHref,
+
+                data: {
+                    CategoryId: CategoryId
+                },
+
+                success: function (response) {
+                    console.log(response)
+                    $('.filtered-area').html(response);
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
+
+    })
+
+    $(document).on("click", '.select-color', function (e) {
+        e.preventDefault();
+        let aHref = e.target.href;
+        let category = e.target.previousElementSibling
+        let CategoryId = category.value;
+
+
+        console.log(CategoryId)
+
+        console.log(aHref)
+
+
+
+        $.ajax(
+            {
+                type: "GET",
+                url: aHref,
+
+                data: {
+                    CategoryId: CategoryId
+                },
+
+                success: function (response) {
+                    console.log(response)
+                    $('.filtered-area').html(response);
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
+
+    })
+
+    $(document).on("click", '.select-tag', function (e) {
+        e.preventDefault();
+        let aHref = e.target.href;
+        let category = e.target.previousElementSibling
+        let CategoryId = category.value;
+
+
+        console.log(CategoryId)
+
+        console.log(aHref)
+
+
+
+        $.ajax(
+            {
+                type: "GET",
+                url: aHref,
+
+                data: {
+                    CategoryId: CategoryId
+                },
+
+                success: function (response) {
+                    console.log(response)
+                    $('.filtered-area').html(response);
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
+
+    })
 
 
     $(document).on("change", ".searchproductPrice", function (e)
@@ -125,7 +225,7 @@ $(document).ready(function () {
 
         let maxPrice = e.target.previousElementSibling.children[0].children[4].innerText.slice(1);
         let MaxPrice = parseInt(maxPrice);
-        let aHref = document.querySelector('.shopping-cart').href;
+        let aHref = document.querySelector(".shoppage-url").href;
 
         console.log(MinPrice);
         console.log(MaxPrice);
@@ -136,17 +236,53 @@ $(document).ready(function () {
                 url: aHref,
 
                 data: {
-                    minPrice: MinPrice,
-                    maxPrice: MaxPrice
+                    MinPrice: MinPrice,
+                    MaxPrice: MaxPrice
 
                 },
 
                 success: function (response) {
-                    //$(".viewcompadd").html(null);
-                    console.log(response)
-                    $(".viewcompadd").html(response);
+                    $('.filtered-area').html(response);
+             
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
 
 
+    })
+
+
+
+
+    $(document).on("click", ".search-btn-product", function (e) {
+        e.preventDefault();
+        let input = document.querySelector(".search-box-product");
+        console.log(input)
+        let Search = input.value;
+
+        console.log(search);
+        let aHref = document.querySelector(".shoppage-url").href;
+
+        console.log(aHref)
+
+        $.ajax(
+            {
+                url: aHref,
+
+                data: {
+
+                    Search: Search,
+
+                },
+
+                success: function (response) {
+                    console.log(data);
+                   /* $('.filtered-area').html(response);*/
 
 
                 },
@@ -159,6 +295,7 @@ $(document).ready(function () {
 
 
     })
+
 
 
 });

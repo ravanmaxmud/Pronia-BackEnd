@@ -12,7 +12,8 @@
     @foreach (var item in Model)
     {
         <li>
-            <a  asp-route="client-shoppage-index" asp-route-colorId="@item.Id">
+            <input type="hidden" value="@item.Id" />
+            <a class="select-color" asp-route="client-shoppage-filter">
                 <i class="fa fa-chevron-right"></i>
                 @item.Title
             </a>

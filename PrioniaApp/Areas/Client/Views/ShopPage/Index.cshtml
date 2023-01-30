@@ -27,7 +27,7 @@
                         <div class="widgets-searchbox">
                             <form id="widgets-searchbox">
                                 <span>Search By Name or Price</span>
-                                @using (Html.BeginForm("Index", "ShopPage", FormMethod.Get))
+                                @using (Html.BeginForm("Filter", "ShopPage", FormMethod.Get))
                                 {
                                     <div class="d-none">
                                         <b>Search By :</b>
@@ -36,8 +36,8 @@
                                     </div>
 
 
-                                    @Html.TextBox("search")
-                                    <button class="search-btn" type="submit" aria-label="searchbtn"><i class="pe-7s-search"></i></button>
+                                    @Html.TextBox("Search",null,new { @class="search-box-product"})
+                                    <button class="search-btn-product" type="submit" aria-label="searchbtn"><i class="pe-7s-search"></i></button>
                                 }
 
 
@@ -55,6 +55,7 @@
                             <div class="widgets-item widgets-filter">
                                 <h2 class="widgets-title mb-4">Price Filter</h2>
                                 <div class="price-filter">
+
                                     <input type="text"
                                            class="pronia-range-slider searchproductPrice"
                                            name="pronia-range-slider"
@@ -66,6 +67,8 @@
                                            data-max="350"
                                            data-grid="false" />
                                 </div>
+                                <a class="shoppage-url" asp-route="client-shoppage-filter">
+                                </a>
                             </div>
                             <div class="widgets-item">
                                 <!--SortByTags-->
@@ -149,15 +152,13 @@
                         </ul>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active viewcompadd"
+                        <div class="tab-pane fade show active"
                              id="grid-view"
                              role="tabpanel"
                              aria-labelledby="grid-view-tab">
-                            <div class="shoppage-product viewcompadd product-grid-view row g-y-20">
-                                <a class="shopping-cart" asp-route="client-shoppage-index">
-
-                                </a>
+                            <div class="shoppage-product viewcompadd product-grid-view row g-y-20 filtered-area">
                                 @await Component.InvokeAsync(nameof(ShopPageProduct))
+
                             </div>
                         </div>
                         <div class="tab-pane fade"
@@ -165,7 +166,6 @@
                              role="tabpanel"
                              aria-labelledby="list-view-tab">
                             <div class="product-list-view row g-y-30">
-                                @await Component.InvokeAsync(nameof(ShopPageProduct))
                             </div>
                         </div>
                     </div>

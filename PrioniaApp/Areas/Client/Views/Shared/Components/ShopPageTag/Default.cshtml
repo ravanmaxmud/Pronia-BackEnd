@@ -6,7 +6,8 @@
     @foreach (var item in Model)
     {
         <li>
-            <a asp-route="client-shoppage-index" asp-route-tagId="@item.Id">@item.Title</a>
+            <input type="hidden" value="@item.Id" />
+            <a class="select-tag" asp-route="client-shoppage-filter">@item.Title</a>
         </li>
     }
 </ul>

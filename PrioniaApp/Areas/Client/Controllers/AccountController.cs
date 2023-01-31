@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Client.ViewModels.Account;
 using PrioniaApp.Database;
+using PrioniaApp.Services.Abstracts;
 
 namespace PrioniaApp.Areas.Client.Controllers
 {
@@ -12,10 +13,12 @@ namespace PrioniaApp.Areas.Client.Controllers
     public class AccountController : Controller
     {
         private readonly DataContext _dataContext;
+        private readonly IUserService _userService;
 
-        public AccountController(DataContext dataContext)
+        public AccountController(DataContext dataContext, IUserService userService)
         {
             _dataContext = dataContext;
+            _userService = userService;
         }
 
         [HttpGet("dashboard",Name ="client-account-dashboard")]
@@ -27,9 +30,12 @@ namespace PrioniaApp.Areas.Client.Controllers
         [HttpGet("order", Name = "client-account-order")]
         public async  Task<IActionResult> Order()
         {
-            var model = await _dataContext.Orders
+          var model = await _dataContext.Orders.Where(o=> o.UserId == _userService.CurrentUser.Id)
                 .Select(b => new OrderViewModel(b.Id, b.CreatedAt, b.Status, b.SumTotalPrice))
                 .ToListAsync();
+
+
+
 
             return View(model);
         }

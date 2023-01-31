@@ -34,8 +34,9 @@ namespace PrioniaApp.Database
         public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
-        //public DbSet<ClientSay> ClientSays { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly<Program>();

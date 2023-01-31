@@ -59,6 +59,8 @@ namespace PrioniaApp.Services.Concretes
                     return $"{initialSegment}/paymentBenefits/{fileName}";
                 case UploadDirectory.Feedback:
                     return $"{initialSegment}/feedback/{fileName}";
+                case UploadDirectory.Reward:
+                    return $"{initialSegment}/reward/{fileName}";
                 default:
                     throw new Exception("Something went wrong");
             }
@@ -83,6 +85,8 @@ namespace PrioniaApp.Services.Concretes
                     return Path.Combine(startPath, "paymentBenefits");
                 case UploadDirectory.Feedback:
                     return Path.Combine(startPath, "feedback");
+                case UploadDirectory.Reward:
+                    return Path.Combine(startPath, "reward");
                 default:
                     throw new Exception("Something went wrong");
             }

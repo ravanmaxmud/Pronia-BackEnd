@@ -6,5 +6,6 @@
         Slider = 2,
         PaymentBenefits = 4,
         Feedback = 16,
+        Reward = 256,
     }
 }

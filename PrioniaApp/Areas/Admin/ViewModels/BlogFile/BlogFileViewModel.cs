@@ -3,7 +3,7 @@
     public class BlogFileViewModel
     {
         public int BlogId { get; set; }
-
+        public List<ListItem> Files { get; set; }
 
         public class ListItem 
         {

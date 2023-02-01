@@ -1,5 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PrioniaApp.Areas.Admin.ViewModels.BlogFile;
+using PrioniaApp.Contracts.File;
+using PrioniaApp.Database;
+using PrioniaApp.Database.Models;
+using PrioniaApp.Services.Abstracts;
 
 namespace PrioniaApp.Areas.Admin.Controllers
 {
@@ -8,10 +14,76 @@ namespace PrioniaApp.Areas.Admin.Controllers
     [Authorize(Roles = "admin")]
     public class BlogFileController : Controller
     {
+        private readonly DataContext _dataContext;
 
-        public async Task<IActionResult> List()
+        private readonly IFileService _fileService;
+
+        public BlogFileController(DataContext dataContext, IFileService fileService)
         {
-            return View();
+            _dataContext = dataContext;
+            _fileService = fileService;
         }
+
+        [HttpGet("{blogId}/blogimage/list", Name = "admin-blogimage-list")]
+        public async Task<IActionResult> List([FromRoute] int blogId)
+        {
+            var product = await _dataContext.Blogs.Include(p => p.BlogFiles).FirstOrDefaultAsync(p => p.Id == blogId);
+            if (product == null) return NotFound();
+
+            var model = new BlogFileViewModel { BlogId = product.Id };
+
+            model.Files = product.BlogFiles.Select(p => new BlogFileViewModel.ListItem
+            {
+                Id = p.Id,
+                FileUrl = _fileService.GetFileUrl(p.FileNameInSystem, Contracts.File.UploadDirectory.Blog),
+                CreatedAt = p.CreatedAt
+            }).ToList();
+
+            return View(model);
+
+        }
+
+
+
+        #region Add
+
+        [HttpGet("{blogId}/blogimage/add", Name = "admin-blogimage-add")]
+        public async Task<IActionResult> Add()
+        {
+            return View(new AddViewModel());
+        }
+
+        [HttpPost("{blogId}/blogimage/add", Name = "admin-blogimage-add")]
+        public async Task<IActionResult> Add([FromRoute] int blogId, AddViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var product = await _dataContext.Blogs.FirstOrDefaultAsync(p => p.Id == blogId);
+
+            if (product is null)
+            {
+                return NotFound();
+            }
+
+            var imageNameInSystem = await _fileService.UploadAsync(model.File, UploadDirectory.Blog);
+
+            var productImage = new BlogFile
+            {
+                Blog = product,
+                FileName = model.File.FileName,
+                FileNameInSystem = imageNameInSystem,
+                IsImage = model.IsShowImage,
+                IsVidio = model.IsShowVidio
+            };
+
+            await _dataContext.BlogFiles.AddAsync(productImage);
+
+            await _dataContext.SaveChangesAsync();
+
+            return RedirectToRoute("admin-blogimage-list", new { blogId = blogId });
+
+        }
+        #endregion
+
     }
 }

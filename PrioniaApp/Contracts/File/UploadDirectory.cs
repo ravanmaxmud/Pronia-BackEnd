@@ -7,5 +7,6 @@
         PaymentBenefits = 4,
         Feedback = 16,
         Reward = 256,
+        Blog = 65536,
     }
 }

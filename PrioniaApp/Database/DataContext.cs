@@ -35,6 +35,13 @@ namespace PrioniaApp.Database
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogCategory> BlogCategories { get; set; }
+        public DbSet<BlogTag> BlogTags { get; set; }
+        public DbSet<BlogAndBlogCategory> BlogAndBlogCategories { get; set; }
+        public DbSet<BlogAndBlogTag> BlogAndBlogTags { get; set; }
+        public DbSet<BlogFile> BlogFiles { get; set; }
+
 
         public DbSet<Reward> Rewards { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

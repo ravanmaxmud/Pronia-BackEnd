@@ -25,13 +25,6 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             if (slide == "NewProduct")
             {
                 productsQuery = productsQuery.OrderByDescending(p => p.CreatedAt).Take(4);
-                //var newProduct = await _dataContext.Products.OrderByDescending(p => p.CreatedAt).Take(4).Select(p => new ProductListItemViewModel(p.Id, p.Name, p.Description, p.Price, p.CreatedAt,
-                //p.ProductImages!.Take(1).FirstOrDefault() != null
-                //? _fileService.GetFileUrl(p.ProductImages.Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                //: String.Empty,
-                //   p.ProductImages!.Skip(1).Take(1).FirstOrDefault() != null
-                //? _fileService.GetFileUrl(p.ProductImages.Skip(1).Take(1).FirstOrDefault()!.ImageNameInFileSystem, UploadDirectory.Products)
-                //: String.Empty)).ToListAsync();
             }
             else if (slide =="BestProducts")
             {

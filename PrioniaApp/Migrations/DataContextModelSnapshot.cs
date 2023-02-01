@@ -79,6 +79,166 @@ namespace PrioniaApp.Migrations
                     b.ToTable("basket-products", (string)null);
                 });
 
+            modelBuilder.Entity("PrioniaApp.Database.Models.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogAndBlogCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BlogCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogCategoryId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogAndBlogCategories");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogAndBlogTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogTagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("BlogTagId");
+
+                    b.ToTable("BlogAndBlogTags");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("BlogCategories");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileNameInSystem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsImage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVidio")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogFiles");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogTags");
+                });
+
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>
                 {
                     b.Property<int>("Id")
@@ -777,6 +937,64 @@ namespace PrioniaApp.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogAndBlogCategory", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.BlogCategory", "Category")
+                        .WithMany("BlogCategories")
+                        .HasForeignKey("BlogCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PrioniaApp.Database.Models.Blog", "Blog")
+                        .WithMany("BlogCategories")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogAndBlogTag", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.Blog", "Blog")
+                        .WithMany("BlogTags")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PrioniaApp.Database.Models.BlogTag", "Tag")
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogCategory", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.BlogCategory", "Parent")
+                        .WithMany("Categoris")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogFile", b =>
+                {
+                    b.HasOne("PrioniaApp.Database.Models.Blog", "Blog")
+                        .WithMany("BlogFiles")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+                });
+
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>
                 {
                     b.HasOne("PrioniaApp.Database.Models.Catagory", "Parent")
@@ -946,6 +1164,27 @@ namespace PrioniaApp.Migrations
             modelBuilder.Entity("PrioniaApp.Database.Models.Basket", b =>
                 {
                     b.Navigation("BasketProducts");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.Blog", b =>
+                {
+                    b.Navigation("BlogCategories");
+
+                    b.Navigation("BlogFiles");
+
+                    b.Navigation("BlogTags");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogCategory", b =>
+                {
+                    b.Navigation("BlogCategories");
+
+                    b.Navigation("Categoris");
+                });
+
+            modelBuilder.Entity("PrioniaApp.Database.Models.BlogTag", b =>
+                {
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("PrioniaApp.Database.Models.Catagory", b =>

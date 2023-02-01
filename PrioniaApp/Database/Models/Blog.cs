@@ -6,9 +6,12 @@ namespace PrioniaApp.Database.Models
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public bool IsVidio { get; set; }
         
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
+
+        public List<BlogFile>? BlogFiles { get; set; }
+        public List<BlogAndBlogCategory>? BlogCategories { get; set; }
+        public List<BlogAndBlogTag>? BlogTags { get; set; }
     }
 }

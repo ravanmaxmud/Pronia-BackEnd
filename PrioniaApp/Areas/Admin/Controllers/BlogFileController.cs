@@ -36,15 +36,14 @@ namespace PrioniaApp.Areas.Admin.Controllers
             {
                 Id = p.Id,
                 FileUrl = _fileService.GetFileUrl(p.FileNameInSystem, Contracts.File.UploadDirectory.Blog),
-                CreatedAt = p.CreatedAt
+                CreatedAt = p.CreatedAt,
+                IsImage = p.IsImage,
+                IsVidio = p.IsVidio
             }).ToList();
 
             return View(model);
 
         }
-
-
-
         #region Add
 
         [HttpGet("{blogId}/blogimage/add", Name = "admin-blogimage-add")]
@@ -77,6 +76,29 @@ namespace PrioniaApp.Areas.Admin.Controllers
             };
 
             await _dataContext.BlogFiles.AddAsync(productImage);
+
+            await _dataContext.SaveChangesAsync();
+
+            return RedirectToRoute("admin-blogimage-list", new { blogId = blogId });
+
+        }
+        #endregion
+
+        #region Delete
+        [HttpPost("{blogId}/blogimage/{blogFileId}/delete", Name = "admin-blogimage-delete")]
+        public async Task<IActionResult> Delete([FromRoute] int blogId, [FromRoute] int blogFileId)
+        {
+
+            var productImage = await _dataContext.BlogFiles.FirstOrDefaultAsync(p => p.BlogId == blogId && p.Id == blogFileId);
+
+            if (productImage is null)
+            {
+                return NotFound();
+            }
+
+            await _fileService.DeleteAsync(productImage.FileNameInSystem, UploadDirectory.Blog);
+
+            _dataContext.BlogFiles.Remove(productImage);
 
             await _dataContext.SaveChangesAsync();
 

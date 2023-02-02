@@ -43,24 +43,24 @@
                         @foreach (var blogFile in Model.Files!)
                         {
                             <tr>
-                                g
-                                @if (blogFile.IsImage)
+                                @if (blogFile.IsImage == true)
                                 {
 
                                     <td><img src="~/@blogFile.FileUrl" width="20%" /></td>
                                 }
-                                @if (blogFile.IsVidio)
+                                @if (blogFile.IsVidio ==true)
                                 {
-                                    <video width="30%" controls>
-                                        <source src="~/@blogFile.FileUrl" type="video/mp4">
-                                    </video>
+                                    <td>
+
+                                        <video width="20%" controls>
+                                            <source src="~/@blogFile.FileUrl" type="video/mp4">
+                                        </video>
+                                    </td>
                                 }
                                 <td>@blogFile.CreatedAt.ToString("dd/MM/yyyy")</td>
-                                <td>@blogFile.IsVidio</td>
-                                <td>@blogFile.IsImage</td>
                                 <td class="text-end">
                                     <a asp-route="admin-blogfile-update" asp-route-id="@blogFile.Id"><i class="las la-pen text-secondary font-16"></i></a>
-                                    <form method="POST" asp-route="admin-blogfile-delete" asp-route-blogId="@Model.BlogId" asp-route-blogFileId="@blogFile.Id" id="book-image-form-@blogFile.Id"></form>
+                                    <form method="POST" asp-route="admin-blogimage-delete" asp-route-blogId="@Model.BlogId" asp-route-blogFileId="@blogFile.Id" id="book-image-form-@blogFile.Id"></form>
                                     <button type="submit" form="book-image-form-@blogFile.Id">
                                         <i class="las la-trash-alt text-secondary font-16"></i>
                                     </button>

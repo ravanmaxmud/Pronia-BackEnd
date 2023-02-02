@@ -3,19 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using PrioniaApp.Areas.Client.ViewModels.Home;
 using PrioniaApp.Database;
 using PrioniaApp.Services.Abstracts;
-using System.Linq;
 
 namespace PrioniaApp.Areas.Client.ViewCompanents
 {
-
-    [ViewComponent(Name = "Blog")]
-    public class Blog : ViewComponent
+    [ViewComponent(Name = "BlogPage")]
+    public class BlogPage : ViewComponent
     {
 
         private readonly DataContext _dataContext;
         private readonly IFileService _fileService;
 
-        public Blog(DataContext dataContext, IFileService fileService)
+        public BlogPage(DataContext dataContext, IFileService fileService)
         {
             _dataContext = dataContext;
             _fileService = fileService;

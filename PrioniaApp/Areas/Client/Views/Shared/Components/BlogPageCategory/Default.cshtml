@@ -1,0 +1,25 @@
+﻿@using PrioniaApp.Areas.Client.ViewModels.Blog
+@model List<CategoryListItemViewModel>
+
+<div class="widgets-item pt-0">
+    <h2 class="widgets-title mb-4">Categories</h2>
+    <ul class="widgets-category">
+
+        <li>
+            <a href="#">
+                <i class="fa fa-chevron-right"></i>
+                All <span>(@Model.Count())</span>
+            </a>
+        </li>
+
+        @foreach (var item in Model)
+        {
+            <li>
+                <a class="select-blog-category" href="#">
+                    <i class="fa fa-chevron-right"></i>
+                    @item.Title
+                </a>
+            </li>
+        }
+    </ul>
+</div>

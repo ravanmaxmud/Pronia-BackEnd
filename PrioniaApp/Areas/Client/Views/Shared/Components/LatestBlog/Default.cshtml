@@ -1,0 +1,40 @@
+﻿@using PrioniaApp.Areas.Client.ViewModels.Home
+@model List<BlogViewModel>
+
+
+<div class="swiper-wrapper">
+    @foreach (var item in Model)
+    {
+        <div class="swiper-slide">
+            <div class="widgets-list-item">
+                <div class="widgets-list-img">
+                    <a href="#">
+                        @if (item.IsImage == true)
+                        {
+
+                            <img class="img-full"
+                         src="~/@item.BlogFiles"
+                         alt="Blog Image" />
+                        }
+                        @if (item.IsVidio == true)
+                        {
+                            <video width="120" height="70" controls>
+                                <source src="~/@item.BlogFiles" type="video/mp4">
+                            </video>
+                        }
+                    </a>
+                </div>
+                <div class="widgets-list-content">
+                    <div class="widgets-meta">
+                        <ul>
+                            <li class="date">@item.CreatedAt</li>
+                        </ul>
+                    </div>
+                    <h2 class="title mb-0">
+                        <a href="#">@item.Title</a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    }
+</div>

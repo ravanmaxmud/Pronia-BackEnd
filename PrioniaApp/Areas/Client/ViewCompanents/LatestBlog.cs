@@ -6,14 +6,14 @@ using PrioniaApp.Services.Abstracts;
 
 namespace PrioniaApp.Areas.Client.ViewCompanents
 {
-    [ViewComponent(Name = "BlogPage")]
-    public class BlogPage : ViewComponent
+    [ViewComponent(Name = "LatestBlog")]
+    public class LatestBlog : ViewComponent
     {
 
         private readonly DataContext _dataContext;
         private readonly IFileService _fileService;
 
-        public BlogPage(DataContext dataContext, IFileService fileService)
+        public LatestBlog(DataContext dataContext, IFileService fileService)
         {
             _dataContext = dataContext;
             _fileService = fileService;
@@ -21,14 +21,8 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
 
         public async Task<IViewComponentResult> InvokeAsync(string slider)
         {
-            var model = _dataContext.Blogs.AsQueryable();
-
-            if (slider == "LatestBlog")
-            {
-                model = model.OrderByDescending(b=> b.CreatedAt);
-            }
-            var newBlog  =
-              model.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
+            var model =
+               _dataContext.Blogs.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
                 .Select(b => new BlogViewModel(b.Id, b.Title, b.Content, b.CreatedAt,
                 b.BlogTags!.Select(b => b.Tag).Select(b => new BlogViewModel.TagViewModel(b.Title)).ToList(),
                 b.BlogCategories!.Select(b => b.Category).Select(b => new BlogViewModel.CategoryViewModeL(b.Title, b.Parent.Title)).ToList(),

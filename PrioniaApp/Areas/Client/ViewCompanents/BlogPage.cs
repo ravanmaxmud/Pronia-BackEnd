@@ -19,16 +19,20 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             _fileService = fileService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string slider)
+        public async Task<IViewComponentResult> InvokeAsync(string? searchBy = null,
+           string? search = null,
+           [FromQuery] int? categoryId = null, [FromQuery] int? tagId = null)
         {
-            var model = _dataContext.Blogs.AsQueryable();
 
-            if (slider == "LatestBlog")
+            var blogQuery = _dataContext.Blogs.AsQueryable();
+
+            if (searchBy == "Title")
             {
-                model = model.OrderByDescending(b=> b.CreatedAt);
+                blogQuery = blogQuery.Where(p => p.Title.StartsWith(search) || search == null);
             }
-            var newBlog  =
-              model.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
+
+            var model  =
+              await blogQuery.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
                 .Select(b => new BlogViewModel(b.Id, b.Title, b.Content, b.CreatedAt,
                 b.BlogTags!.Select(b => b.Tag).Select(b => new BlogViewModel.TagViewModel(b.Title)).ToList(),
                 b.BlogCategories!.Select(b => b.Category).Select(b => new BlogViewModel.CategoryViewModeL(b.Title, b.Parent.Title)).ToList(),

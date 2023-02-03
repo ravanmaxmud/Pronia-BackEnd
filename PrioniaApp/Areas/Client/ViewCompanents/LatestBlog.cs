@@ -22,7 +22,7 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
         public async Task<IViewComponentResult> InvokeAsync(string slider)
         {
             var model =
-               _dataContext.Blogs.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
+              await _dataContext.Blogs.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)
                 .Select(b => new BlogViewModel(b.Id, b.Title, b.Content, b.CreatedAt,
                 b.BlogTags!.Select(b => b.Tag).Select(b => new BlogViewModel.TagViewModel(b.Title)).ToList(),
                 b.BlogCategories!.Select(b => b.Category).Select(b => new BlogViewModel.CategoryViewModeL(b.Title, b.Parent.Title)).ToList(),

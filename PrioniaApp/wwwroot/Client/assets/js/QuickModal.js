@@ -292,4 +292,41 @@
 
 
 
+    $(document).on("click", '.select-blog-category', function (e) {
+        e.preventDefault();
+        let aHref = e.target.href;
+        let category = e.target.previousElementSibling
+        let CategoryId = category.value;
+
+
+        console.log(CategoryId)
+
+        console.log(aHref)
+
+
+
+        $.ajax(
+            {
+                type: "GET",
+                url: aHref,
+
+                data: {
+                    CategoryId: CategoryId
+                },
+
+                success: function (response) {
+                    console.log(response)
+                    $('.blog-pro').html(response);
+
+                },
+                error: function (err) {
+                    $(".product-details-modal").html(err.responseText);
+
+                }
+
+            });
+
+    })
+
+
 });

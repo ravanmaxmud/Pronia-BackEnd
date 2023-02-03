@@ -30,6 +30,12 @@ namespace PrioniaApp.Areas.Client.ViewCompanents
             {
                 blogQuery = blogQuery.Where(p => p.Title.StartsWith(search) || search == null);
             }
+            else if (categoryId is not null || tagId is not null)
+            {
+
+                blogQuery = blogQuery.Where(b => categoryId == null || b.BlogCategories!.Any(bc => bc.BlogCategoryId == categoryId))
+                    .Where(b => tagId == null || b.BlogTags!.Any(bt=> bt.BlogTagId == tagId));
+            }
 
             var model  =
               await blogQuery.Include(b => b.BlogTags).Include(b => b.BlogCategories).Include(b => b.BlogFiles)

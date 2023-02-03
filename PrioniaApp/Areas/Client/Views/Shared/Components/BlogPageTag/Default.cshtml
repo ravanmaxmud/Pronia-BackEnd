@@ -7,7 +7,8 @@
         @foreach (var item in Model)
         {
             <li>
-                <a href="#">@item.Title</a>
+                <input type="hidden" value="@item.Id" />
+                <a class="select-blog-tag" asp-route="client-blog-filter">@item.Title</a>
             </li>
         }
     </ul>

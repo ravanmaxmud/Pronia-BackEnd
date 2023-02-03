@@ -6,7 +6,7 @@
     <ul class="widgets-category">
 
         <li>
-            <a href="#">
+            <a asp-route="client-blog-filter">
                 <i class="fa fa-chevron-right"></i>
                 All <span>(@Model.Count())</span>
             </a>
@@ -15,7 +15,8 @@
         @foreach (var item in Model)
         {
             <li>
-                <a class="select-blog-category" href="#">
+                <input type="hidden" value="@item.Id" />
+                <a class="select-blog-category" asp-route="client-blog-filter">
                     <i class="fa fa-chevron-right"></i>
                     @item.Title
                 </a>
